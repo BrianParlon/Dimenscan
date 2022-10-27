@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,11 +26,27 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userId;
+    private FloatingActionButton f1,f2,f3;
+    private Boolean isOpen=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        f1 =findViewById(R.id.floatingActionButton);
+        f2 =findViewById(R.id.floatingActionButton2);
+        f3 =findViewById(R.id.floatingActionButton3);
+        f1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isOpen){
+                    openButton();
+                }else{
+                    closeButton();
+                }
+            }
+        });
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference  = FirebaseDatabase.getInstance().getReference("users");
@@ -57,6 +74,21 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         lgOut.setOnClickListener(this);
 
     }
+
+
+    private void openButton() {
+        isOpen=true;
+        f2.animate().translationY(-getResources().getDimension(R.dimen.stan_60));
+        f3.animate().translationY(-getResources().getDimension(R.dimen.stan_110));
+
+
+    }
+    private void closeButton() {
+        isOpen=false;
+        f2.animate().translationY(0);
+        f3.animate().translationY(0);
+    }
+
 
     @Override
     public void onClick(View view) {
