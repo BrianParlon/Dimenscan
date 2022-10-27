@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "738434319013",
+    "project_id": "dimension-7c478",
+    "storage_bucket": "dimension-7c478.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738434319013:android:5a32df415599188045c34c",
+        "android_client_info": {
+          "package_name": "com.example.dimenscan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738434319013-i1amur4lhe79pp50hbmfqbjqutkjn47e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2MdcXMO79tEiXgr_hF29GTmStb1PAFuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738434319013-i1amur4lhe79pp50hbmfqbjqutkjn47e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

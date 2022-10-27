@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">DimenScan</string>
+    <string name="account_name">Account name</string>
+    <string name="name">Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="welcome_to_dimenscan">Welcome to DimenScan</string>
+    <string name="account_text">To create an account with DimenScan, Please fill out your details below!</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">johnSmith@gmail.com</string>
+    <string name="lName_hint">Last Name</string>
+    <string name="fName_hint">First Name</string>
+    <string name="acc_name_hint">Account name</string>
+    <string name="email_login">Email</string>
+    <string name="account_name_p">Account Name</string>
+
+</resources>
