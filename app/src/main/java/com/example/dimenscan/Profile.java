@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +30,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private String userId;
     private FloatingActionButton f1,f2,f3;
     private Boolean isOpen=false;
-
+     Button btnPicture;
+     ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
 
         f1 =findViewById(R.id.floatingActionButton);
         f2 =findViewById(R.id.floatingActionButton2);
@@ -48,11 +52,15 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
+    btnPicture = (Button) findViewById(R.id.camera);
+    btnPicture.setOnClickListener(this);
+
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference  = FirebaseDatabase.getInstance().getReference("users");
         userId = user.getUid();
 
-        final TextView accName =(TextView) findViewById(R.id.textView2);
+        TextView accName =(TextView) findViewById(R.id.textView2);
         reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,6 +106,27 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, MainActivity.class));
                 break;
 
+            case R.id.camera:
+                camera();
+                Toast.makeText(this, "button pressed", Toast.LENGTH_SHORT).show();
+                break;
         }
+    }
+
+    private void camera() {
+
+        btnPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivity(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }
