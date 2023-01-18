@@ -7,6 +7,16 @@
     tools:context=".MainActivity"
     >
 
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="83dp"
+        android:background="@drawable/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -63,8 +73,8 @@
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="358dp"
-        android:layout_height="47dp"
+        android:layout_width="277dp"
+        android:layout_height="39dp"
         android:text="@string/welcome_to_dimenscan"
         android:textAlignment="center"
         android:textColor="#FF5722"
@@ -72,10 +82,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.301"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068" />
+        app:layout_constraintVertical_bias="0.05" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

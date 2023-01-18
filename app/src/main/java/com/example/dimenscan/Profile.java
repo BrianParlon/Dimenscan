@@ -30,7 +30,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private String userId;
     private FloatingActionButton f1,f2,f3;
     private Boolean isOpen=false;
-     Button btnPicture;
+     Button btnPicture,newProd;
      ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         });
+        newProd = (Button) findViewById(R.id.button5);
+        newProd.setOnClickListener(this);
 
     btnPicture = (Button) findViewById(R.id.camera);
     btnPicture.setOnClickListener(this);
@@ -106,10 +108,17 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, MainActivity.class));
                 break;
 
+            case R.id.button5:
+
+                startActivity(new Intent(this,PhotoOrManual.class));
+                break;
+
             case R.id.camera:
                 camera();
                 Toast.makeText(this, "button pressed", Toast.LENGTH_SHORT).show();
                 break;
+
+
         }
     }
 
