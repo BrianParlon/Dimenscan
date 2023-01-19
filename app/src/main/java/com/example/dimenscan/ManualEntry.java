@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.sax.StartElementListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.w3c.dom.Text;
 
 public class ManualEntry extends AppCompatActivity implements View.OnClickListener {
-    Button conv, submit;
+    Button conv, submit, reset;
     EditText length, height, width;
     TextView lengCon, heightCon, widthCon;
 
@@ -24,11 +25,14 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_entry);
 
-        conv = (Button) findViewById(R.id.button3);
+        conv = (Button) findViewById(R.id.convBtn);
         conv.setOnClickListener(this);
 
-        submit = (Button) findViewById(R.id.button4);
+        submit = (Button) findViewById(R.id.submitBtn);
         submit.setOnClickListener(this);
+
+        reset = (Button) findViewById(R.id.resetBtn);
+        reset.setOnClickListener(this);
 
         //Users input for their measurements
         length = (EditText) findViewById(R.id.editTextTextPersonName7);
@@ -45,9 +49,17 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button3:
-                Toast.makeText(ManualEntry.this,"Error",Toast.LENGTH_LONG).show();
+            case R.id.convBtn:
+                Toast.makeText(ManualEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
                 conversion();
+                break;
+
+            case R.id.resetBtn:
+                Toast.makeText(ManualEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this,ManualEntry.class));
+                break;
+            case R.id.submitBtn:
+                Toast.makeText(ManualEntry.this,"Dimensions submitted",Toast.LENGTH_LONG).show();
                 break;
 
         }
