@@ -59,6 +59,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
                 startActivity(new Intent(this,ManualEntry.class));
                 break;
             case R.id.submitBtn:
+
                 Toast.makeText(ManualEntry.this,"Dimensions submitted",Toast.LENGTH_LONG).show();
                 break;
 
