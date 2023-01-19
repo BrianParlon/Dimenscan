@@ -53,6 +53,7 @@
         android:layout_height="150dp"
         android:text="Enter Dimensions Manually"
         android:textSize="19dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
