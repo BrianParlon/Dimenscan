@@ -28,34 +28,22 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userId;
-    private FloatingActionButton f1,f2,f3;
     private Boolean isOpen=false;
-     Button btnPicture,newProd;
+     Button btnPicture,newProd,saved;
      ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        saved = (Button) findViewById(R.id.savedDimension);
+        saved.setOnClickListener(this);
 
-        f1 =findViewById(R.id.floatingActionButton);
-        f2 =findViewById(R.id.floatingActionButton2);
-        f3 =findViewById(R.id.floatingActionButton3);
-        f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isOpen){
-                    openButton();
-                }else{
-                    closeButton();
-                }
-            }
-        });
         newProd = (Button) findViewById(R.id.button5);
         newProd.setOnClickListener(this);
 
-    btnPicture = (Button) findViewById(R.id.camera);
-    btnPicture.setOnClickListener(this);
+        btnPicture = (Button) findViewById(R.id.camera);
+        btnPicture.setOnClickListener(this);
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -86,20 +74,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    private void openButton() {
-        isOpen=true;
-        f2.animate().translationY(-getResources().getDimension(R.dimen.stan_60));
-        f3.animate().translationY(-getResources().getDimension(R.dimen.stan_110));
-
-
-    }
-    private void closeButton() {
-        isOpen=false;
-        f2.animate().translationY(0);
-        f3.animate().translationY(0);
-    }
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -111,6 +85,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             case R.id.button5:
 
                 startActivity(new Intent(this,PhotoOrManual.class));
+                break;
+            case R.id.savedDimension:
+                startActivity(new Intent(this, RecycleView.class));
                 break;
 
             case R.id.camera:
