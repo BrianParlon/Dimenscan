@@ -87,19 +87,19 @@
         app:layout_constraintVertical_bias="0.729" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="145dp"
-        android:layout_height="36dp"
-        android:text="User Logged in :"
+        android:id="@+id/textViewLogIn"
+        android:layout_width="151dp"
+        android:layout_height="49dp"
+        android:text="User Logged in "
         android:textColor="@color/black"
-        android:textSize="19dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.011"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13"
-        app:layout_constraintVertical_bias="0.063" />
+        app:layout_constraintVertical_bias="0.058" />
 
     <TextView
         android:id="@+id/textView2"
@@ -110,10 +110,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintVertical_bias="0.161" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

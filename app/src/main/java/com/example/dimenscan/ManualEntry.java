@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class ManualEntry extends AppCompatActivity implements View.OnClickListener {
-    Button conv, submit, reset, online;
+    Button conv, submit, reset, online , test;
     EditText length, height, width;
     TextView lengCon, heightCon, widthCon;
     private FirebaseUser mUser;
@@ -52,6 +52,9 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference  = FirebaseDatabase.getInstance().getReference().child("Dimensions").child(onlineUserId);
         userId = mUser.getUid();
+
+        test = (Button) findViewById(R.id.onlineTest);
+        test.setOnClickListener(this);
 
         online = (Button) findViewById(R.id.submitBtn2);
         online.setOnClickListener(this);
@@ -83,6 +86,12 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
             case R.id.convBtn:
                 Toast.makeText(ManualEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
                 conversion();
+                break;
+            case R.id.onlineTest:
+                Toast.makeText(ManualEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, Listing.class));
+
+
                 break;
 
             case R.id.resetBtn:

@@ -149,7 +149,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                 }
             });
             deleteImg = itemView.findViewById(R.id.delete);
-            txtView = itemView.findViewById(R.id.textView);
+            txtView = itemView.findViewById(R.id.textViewCat);
             deleteImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
