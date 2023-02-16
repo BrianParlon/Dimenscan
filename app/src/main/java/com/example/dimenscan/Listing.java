@@ -75,7 +75,7 @@ public class Listing extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-        Document doc;
+        Document doc,doc2;
             try {
 //                String url = "https://www.cinemaqatar.com/";
 //
@@ -105,47 +105,33 @@ public class Listing extends AppCompatActivity {
 //                    parseItems.add(new ParseItem(imgUrl, title));
 //                    Log.d("items", "img: " + imgUrl + " . title: " + title);
 //                }
+                doc = Jsoup.connect(
+                                "https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=84&pa_depth-cm=48&pa_height-cm=76")
+                        .get();
+                Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
 
-//                String url = "https://jysk.ie/office/desks/computer-desks";
-//
-//                Document doc = Jsoup.connect(url).get();
-//
-//                Elements data = doc.select("div.product-teaser-body");
-//                int size = data.size();
-//                Log.d("doc", "doc: "+doc);
-//                Log.d("data", "data: "+data);
-//                Log.d("size", ""+size);
-//                for (int i = 0; i < size; i++) {
-//                    String imgUrl = data.select("a.product-teaser-image-link")
-//                            .select("img")
-//                            .eq(i)
-//                            .attr("data-src");
-//
-//                    String title = data.select("div.product-teaser-body")
-//                            .select("a")
-//                            .eq(i)
-//                            .text();
-//
-////                    String detailUrl = data.select("h4.gridminfotitle")
-////                            .select("a")
-////                            .eq(i)
-////                            .attr("href");
-//
-//                    parseItems.add(new ParseItem(imgUrl, title));
-//                    //Log.d("items", "img: " + imgUrl + " . title: " + title);
-//                }
-                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/").get();
-                Elements images =
-                        doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+                doc2 = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=84&pa_depth-cm=48&pa_height-cm=76").get();
+                Elements texts = doc2.select("div.title-wrapper");
+                int i =0;
                 for (Element image : images) {
-                    if (image.attr("src").equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
-                        System.out.println("None");
+
+                    if (image.attr("src")
+                            .equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
+                        System.out.println("none");
                     } else {
                         System.out.println("Image Source: " + image.attr("src"));
                         String imgUrl = image.attr("src");
-                        System.out.println(imgUrl);
-                        parseItems.add(new ParseItem(imgUrl/*, title*/));
-                        Log.d("items", "img: " + imgUrl /*+ " . title: " + title*/);
+
+
+                        String title = texts.select("div.title-wrapper").select("a").eq(i).text();
+
+                        System.out.println("Desk name " + title);
+                        String txt = texts.text();
+
+                        parseItems.add(new ParseItem(imgUrl, title));
+                        Log.d("items", "img: " + imgUrl + " . title: " + title);
+
+                        i++;
                     }
                 }
             } catch (IOException e) {
@@ -157,3 +143,5 @@ public class Listing extends AppCompatActivity {
         }
     }
 }
+//parseItems.add(new ParseItem(imgUrl/*, title*/));
+//                        Log.d("items", "img: " + imgUrl /*+ " . title: " + title*/);

@@ -2,15 +2,15 @@ package com.example.dimenscan;
 public class ParseItem {
 
     private String imgUrl;
-    //private String title;
+    private String title;
 
 
     public ParseItem() {
     }
 
-    public ParseItem(String imgUrl/*, String title*/) {
+    public ParseItem(String imgUrl, String title) {
         this.imgUrl = imgUrl;
-//        this.title = title;
+        this.title = title;
 
     }
 
@@ -22,13 +22,13 @@ public class ParseItem {
         this.imgUrl = imgUrl;
     }
 
-//    public String getTitle() {
-//        return title;
-//    }
+    public String getTitle() {
+        return title;
+    }
 
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 
 }
