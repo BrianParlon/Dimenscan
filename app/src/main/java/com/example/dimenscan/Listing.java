@@ -72,14 +72,10 @@ public class Listing extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
 
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
 
         @Override
         protected Void doInBackground(Void... voids) {
-
+        Document doc;
             try {
 //                String url = "https://www.cinemaqatar.com/";
 //
@@ -110,33 +106,47 @@ public class Listing extends AppCompatActivity {
 //                    Log.d("items", "img: " + imgUrl + " . title: " + title);
 //                }
 
-                String url = "https://jysk.ie/office/desks/computer-desks";
-
-                Document doc = Jsoup.connect(url).get();
-
-                Elements data = doc.select("div.product-teaser-body");
-                int size = data.size();
-                Log.d("doc", "doc: "+doc);
-                Log.d("data", "data: "+data);
-                Log.d("size", ""+size);
-                for (int i = 0; i < size; i++) {
-//                    String imgUrl = data.select("figure.text-center product-teaser-image-container")
+//                String url = "https://jysk.ie/office/desks/computer-desks";
+//
+//                Document doc = Jsoup.connect(url).get();
+//
+//                Elements data = doc.select("div.product-teaser-body");
+//                int size = data.size();
+//                Log.d("doc", "doc: "+doc);
+//                Log.d("data", "data: "+data);
+//                Log.d("size", ""+size);
+//                for (int i = 0; i < size; i++) {
+//                    String imgUrl = data.select("a.product-teaser-image-link")
 //                            .select("img")
 //                            .eq(i)
-//                            .attr("src");
-
-                    String title = data.select("div.product-teaser-body-top")
-                            .select("a")
-                            .eq(i)
-                            .text();
-
-//                    String detailUrl = data.select("h4.gridminfotitle")
+//                            .attr("data-src");
+//
+//                    String title = data.select("div.product-teaser-body")
 //                            .select("a")
 //                            .eq(i)
-//                            .attr("href");
-
-                    parseItems.add(new ParseItem(/*imgUrl,*/ title));
-                    //Log.d("items", "img: " + imgUrl + " . title: " + title);
+//                            .text();
+//
+////                    String detailUrl = data.select("h4.gridminfotitle")
+////                            .select("a")
+////                            .eq(i)
+////                            .attr("href");
+//
+//                    parseItems.add(new ParseItem(imgUrl, title));
+//                    //Log.d("items", "img: " + imgUrl + " . title: " + title);
+//                }
+                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/").get();
+                Elements images =
+                        doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+                for (Element image : images) {
+                    if (image.attr("src").equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
+                        System.out.println("None");
+                    } else {
+                        System.out.println("Image Source: " + image.attr("src"));
+                        String imgUrl = image.attr("src");
+                        System.out.println(imgUrl);
+                        parseItems.add(new ParseItem(imgUrl/*, title*/));
+                        Log.d("items", "img: " + imgUrl /*+ " . title: " + title*/);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

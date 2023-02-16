@@ -35,12 +35,20 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
-        holder.textView.setText(parseItem.getTitle());
-       // Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
+       // holder.textView.setText(parseItem.getTitle());
+        if(parseItem.getImgUrl().isEmpty()){
+            holder.imageView.setImageResource(R.drawable.gradient);
+          //  holder.textView.setText(parseItem.getTitle());
+
+        }else {
+            Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
+           // holder.textView.setText(parseItem.getTitle());
+        }
     }
 
     @Override
     public int getItemCount() {
+
         return parseItems.size();
     }
 
