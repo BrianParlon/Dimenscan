@@ -6,19 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.sax.StartElementListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,11 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-public class ManualEntry extends AppCompatActivity implements View.OnClickListener {
-    Button conv, submit, reset, online , test;
+public class BedEntry extends AppCompatActivity implements View.OnClickListener {
+    Button conv, submit, reset, test;
     EditText length, height, width;
     TextView lengCon, heightCon, widthCon;
     private FirebaseUser mUser;
@@ -44,86 +33,71 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_entry);
+        setContentView(R.layout.activity_bed_entry);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         onlineUserId = mUser.getUid();
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference  = FirebaseDatabase.getInstance().getReference().child("desk_dimensions").child(onlineUserId);
+        reference  = FirebaseDatabase.getInstance().getReference().child("bed_dimensions").child(onlineUserId);
         userId = mUser.getUid();
 
-        test = (Button) findViewById(R.id.onlineTest);
+        test = (Button) findViewById(R.id.testBed);
         test.setOnClickListener(this);
 
 
 
-        conv = (Button) findViewById(R.id.convBtn);
+        conv = (Button) findViewById(R.id.bConvBtn);
         conv.setOnClickListener(this);
 
-        submit = (Button) findViewById(R.id.submitBtn);
+        submit = (Button) findViewById(R.id.bSubmitBtn);
         submit.setOnClickListener(this);
 
-        reset = (Button) findViewById(R.id.resetBtn);
+        reset = (Button) findViewById(R.id.bResetBtn);
         reset.setOnClickListener(this);
 
         //Users input for their measurements
-        length = (EditText) findViewById(R.id.editTextTextPersonName7);
-        height = (EditText) findViewById(R.id.editTextTextPersonName11);
-        width = (EditText) findViewById(R.id.editTextTextPersonName12);
+        length = (EditText) findViewById(R.id.bLength);
+        height = (EditText) findViewById(R.id.bHeight);
+        width = (EditText) findViewById(R.id.bWidth);
 
         //TextViews for conversion if needed
-        lengCon = (TextView) findViewById(R.id.lengthConv);
-        heightCon = (TextView) findViewById(R.id.heightConv);
-        widthCon = (TextView) findViewById(R.id.widthConv);
+        lengCon = (TextView) findViewById(R.id.bLengthConv);
+        heightCon = (TextView) findViewById(R.id.bHeightConv);
+        widthCon = (TextView) findViewById(R.id.bWidthConv);
 
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.convBtn:
-                Toast.makeText(ManualEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
+            case R.id.bConvBtn:
+                Toast.makeText(BedEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
                 conversion();
                 break;
-            case R.id.onlineTest:
-                Toast.makeText(ManualEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, DeskListing.class));
+
+            case R.id.testBed:
+                Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, BedListing.class));
 
 
                 break;
 
-            case R.id.resetBtn:
-                Toast.makeText(ManualEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this,ManualEntry.class));
+            case R.id.bResetBtn:
+                Toast.makeText(BedEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this,BedEntry.class));
                 break;
 
 
-            case R.id.submitBtn:
+            case R.id.bSubmitBtn:
                 saveDimensions();
-                Toast.makeText(ManualEntry.this,"Dimensions submitted",Toast.LENGTH_LONG).show();
+                Toast.makeText(BedEntry.this,"Dimensions submitted",Toast.LENGTH_LONG).show();
                 break;
 
         }
     }
 
-    private void searching() {
 
-        TextView textLength = findViewById(R.id.editTextTextPersonName7);
-        TextView textHeight = findViewById(R.id.editTextTextPersonName11);
-        TextView textWidth = findViewById(R.id.editTextTextPersonName12);
-
-        String lengthSearch = textLength.getText().toString().trim();
-        String widthSearch = textWidth.getText().toString().trim();
-
-        goLink("https://www.wayfair.ie/filters/furniture/sb2/desks-c1774332-p86169~0~"+lengthSearch+"-p86170~0~"+widthSearch+".html");
-
-
-    }
-    private void goLink(String s) {
-        Uri uri = Uri.parse(s);
-        startActivity(new Intent(Intent.ACTION_VIEW,uri));
-    }
 
     private void saveDimensions(){
 
@@ -142,7 +116,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
             reference.child(id).setValue(dim).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(ManualEntry.this, "Dimensions have been added to your profile", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BedEntry.this, "Dimensions have been added to your profile", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -152,7 +126,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
             reference.child(id).setValue(dim).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(ManualEntry.this, "Dimensions have been added to your profile", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BedEntry.this, "Dimensions have been added to your profile", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -171,9 +145,9 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         hght = hght * 2.54;
         wth = wth * 2.54;
 
-         lengConv = String.valueOf(leng);
-         hghtConv = String.valueOf(hght);
-         wthConv = String.valueOf(wth);
+        lengConv = String.valueOf(leng);
+        hghtConv = String.valueOf(hght);
+        wthConv = String.valueOf(wth);
 
         lengCon.setText(lengConv);
         heightCon.setText(hghtConv);

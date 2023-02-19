@@ -4,10 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManualEntry">
+    tools:context=".TableEntry">
+
+    <TextView
+        android:id="@+id/tTableHeading"
+        android:layout_width="156dp"
+        android:layout_height="48dp"
+        android:text="Tables"
+        android:textAlignment="textStart"
+        android:textColor="#FF5722"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.058" />
 
     <Button
-        android:id="@+id/onlineTest"
+        android:id="@+id/testTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="online test"
@@ -16,10 +32,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.847" />
+        app:layout_constraintVertical_bias="0.856" />
 
     <TextView
-        android:id="@+id/widthConv"
+        android:id="@+id/tWidthConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -32,17 +48,18 @@
         app:layout_constraintVertical_bias="0.545" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName12"
+        android:id="@+id/tWidth"
         android:layout_width="172dp"
         android:layout_height="42dp"
+        android:layout_marginBottom="272dp"
         android:ems="10"
         android:hint="e.x 20"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
-        app:layout_constraintStart_toEndOf="@+id/length"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintVertical_bias="0.557"
         tools:visibility="visible" />
 
@@ -71,7 +88,7 @@
         app:layout_constraintVertical_bias="0.162" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tHeading"
         android:layout_width="154dp"
         android:layout_height="46dp"
         android:text="Dimenscan"
@@ -87,23 +104,7 @@
         app:layout_constraintVertical_bias="0.058" />
 
     <TextView
-        android:id="@+id/deskHeading"
-        android:layout_width="154dp"
-        android:layout_height="46dp"
-        android:text="Desks"
-        android:textAlignment="textStart"
-        android:textColor="#FF5722"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.058" />
-
-    <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tText1"
         android:layout_width="266dp"
         android:layout_height="53dp"
         android:text="Note: All measurements are completed in cm."
@@ -119,7 +120,7 @@
         app:layout_constraintVertical_bias="0.146" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tText2"
         android:layout_width="266dp"
         android:layout_height="53dp"
         android:text="If using Inches,click convert below to convert to cm"
@@ -135,7 +136,7 @@
         app:layout_constraintVertical_bias="0.244" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName7"
+        android:id="@+id/tHeight"
         android:layout_width="172dp"
         android:layout_height="42dp"
         android:ems="10"
@@ -143,14 +144,15 @@
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
-        app:layout_constraintStart_toEndOf="@+id/length"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.338"
+        app:layout_constraintHorizontal_bias="0.464"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.509"
         tools:visibility="visible" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName11"
+        android:id="@+id/tLength"
         android:layout_width="172dp"
         android:layout_height="42dp"
         android:ems="10"
@@ -159,9 +161,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
+
         app:layout_constraintStart_toEndOf="@+id/length"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.451"
+        app:layout_constraintTop_toBottomOf="@+id/box"
+        app:layout_constraintVertical_bias="0.147"
         tools:visibility="visible" />
 
     <TextView
@@ -179,7 +182,7 @@
         app:layout_constraintVertical_bias="0.441" />
 
     <TextView
-        android:id="@+id/heightConv"
+        android:id="@+id/tHeightConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -206,7 +209,7 @@
         app:layout_constraintVertical_bias="0.328" />
 
     <TextView
-        android:id="@+id/lengthConv"
+        android:id="@+id/tLengthConv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -233,7 +236,7 @@
         app:layout_constraintVertical_bias="0.545" />
 
     <Button
-        android:id="@+id/convBtn"
+        android:id="@+id/tConvBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Convert"
@@ -246,7 +249,7 @@
         app:layout_constraintVertical_bias="0.339" />
 
     <Button
-        android:id="@+id/resetBtn"
+        android:id="@+id/tResetBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reset"
@@ -259,7 +262,7 @@
         app:layout_constraintVertical_bias="0.745" />
 
     <Button
-        android:id="@+id/submitBtn"
+        android:id="@+id/tSubmitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"

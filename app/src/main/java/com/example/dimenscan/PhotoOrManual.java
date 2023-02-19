@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class PhotoOrManual extends AppCompatActivity implements View.OnClickListener {
-    Button man, cam;
+    Button man, cam, desk, table, bed;
 
 
     @Override
@@ -16,20 +16,38 @@ public class PhotoOrManual extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_or_manual);
 
+        bed =(Button) findViewById(R.id.bedsBtn);
+        bed.setOnClickListener(this);
+
+        table =(Button) findViewById(R.id.tableButton);
+        table.setOnClickListener(this);
+
+        desk =(Button) findViewById(R.id.deskBtn);
+        desk.setOnClickListener(this);
+
         man =(Button) findViewById(R.id.camera_dim);
         man.setOnClickListener(this);
 
-         cam =(Button) findViewById(R.id.manual_dim);
-         cam.setOnClickListener(this);
+
 
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.manual_dim:
+
+            case R.id.deskBtn:
                 startActivity(new Intent(this,ManualEntry.class));
                 break;
+
+            case R.id.tableButton:
+                startActivity(new Intent(this,TableEntry.class));
+                break;
+
+            case R.id.bedsBtn:
+                startActivity(new Intent(this,BedEntry.class));
+                break;
+
             case R.id.camera_dim:
                 startActivity(new Intent(this,CameraWork.class));
         }

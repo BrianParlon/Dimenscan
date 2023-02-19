@@ -15,7 +15,35 @@
         android:theme="@style/Theme.DimenScan"
         tools:targetApi="31">
         <activity
-            android:name=".Listing"
+            android:name=".BedListing"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".BedEntry"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".TableListing"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".TableEntry"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".DeskListing"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
