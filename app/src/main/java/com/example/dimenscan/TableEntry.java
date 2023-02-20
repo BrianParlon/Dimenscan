@@ -70,7 +70,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.convBtn:
+            case R.id.tConvBtn:
                 Toast.makeText(TableEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
                 conversion();
                 break;
@@ -80,13 +80,13 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
                 startActivity(new Intent(this, TableListing.class));
                 break;
 
-            case R.id.resetBtn:
+            case R.id.tResetBtn:
                 Toast.makeText(TableEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this,TableEntry.class));
                 break;
 
 
-            case R.id.submitBtn:
+            case R.id.tSubmitBtn:
                 saveDimensions();
                 Toast.makeText(TableEntry.this,"Dimensions submitted",Toast.LENGTH_LONG).show();
                 break;

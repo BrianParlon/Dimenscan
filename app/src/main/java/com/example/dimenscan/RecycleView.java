@@ -31,7 +31,7 @@ public class RecycleView extends AppCompatActivity {
 
     private MyAdapter mAdapter;
     private String userId;
-    private DatabaseReference reference, reference2;
+    private DatabaseReference reference, reference2,reference3;
     ArrayList<Dimension> dimsList;
     RecyclerView recyclerview;
 
@@ -48,8 +48,9 @@ public class RecycleView extends AppCompatActivity {
 
         recyclerview = findViewById(R.id.recyclerView);
         mAdapter = new MyAdapter(dimsList, this);
-        reference = FirebaseDatabase.getInstance().getReference("Dimensions").child(userId);
-        reference2 = FirebaseDatabase.getInstance().getReference("Dimensions").child(userId);
+        reference = FirebaseDatabase.getInstance().getReference("bed_dimensions").child(userId);
+        reference2 = FirebaseDatabase.getInstance().getReference("desk_dimensions").child(userId);
+        reference3 = FirebaseDatabase.getInstance().getReference("table_dimensions").child(userId);
 
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new LinearLayoutManager(RecycleView.this));
@@ -67,6 +68,46 @@ public class RecycleView extends AppCompatActivity {
         });
 
         reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot Tasks : snapshot.getChildren()){
+
+                    Dimension dim = Tasks.getValue(Dimension.class);
+
+                    dimsList.add(dim);
+
+                    recyclerview.setAdapter(mAdapter);
+                    mAdapter.notifyItemInserted(dimsList.size());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot Tasks : snapshot.getChildren()){
+
+                    Dimension dim = Tasks.getValue(Dimension.class);
+
+                    dimsList.add(dim);
+
+                    recyclerview.setAdapter(mAdapter);
+                    mAdapter.notifyItemInserted(dimsList.size());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        reference3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot Tasks : snapshot.getChildren()){
