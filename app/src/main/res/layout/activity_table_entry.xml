@@ -45,22 +45,22 @@
         app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintVertical_bias="0.532" />
 
     <EditText
         android:id="@+id/tWidth"
         android:layout_width="172dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="272dp"
         android:ems="10"
         android:hint="e.x 20"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintVertical_bias="0.557"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.589"
         tools:visibility="visible" />
 
     <ImageView
@@ -144,11 +144,11 @@
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintHorizontal_bias="0.098"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.509"
+        app:layout_constraintStart_toEndOf="@+id/height"
+        app:layout_constraintTop_toBottomOf="@+id/tLength"
+        app:layout_constraintVertical_bias="0.03"
         tools:visibility="visible" />
 
     <EditText
@@ -160,11 +160,11 @@
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.077"
 
         app:layout_constraintStart_toEndOf="@+id/length"
         app:layout_constraintTop_toBottomOf="@+id/box"
-        app:layout_constraintVertical_bias="0.147"
+        app:layout_constraintVertical_bias="0.13"
         tools:visibility="visible" />
 
     <TextView
@@ -179,7 +179,7 @@
         app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.441" />
+        app:layout_constraintVertical_bias="0.418" />
 
     <TextView
         android:id="@+id/tHeightConv"
@@ -230,10 +230,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintVertical_bias="0.52" />
 
     <Button
         android:id="@+id/tConvBtn"

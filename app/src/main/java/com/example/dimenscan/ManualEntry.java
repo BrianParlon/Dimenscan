@@ -84,19 +84,24 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.convBtn:
                 Toast.makeText(ManualEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
-                conversion();
+                searching();
                 break;
             case R.id.onlineTest:
                 Toast.makeText(ManualEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, DeskListing.class));
+                break;
 
-
+            case R.id.TestingLink:
+                Toast.makeText(ManualEntry.this,"Displaying website",Toast.LENGTH_LONG).show();
+                searching();
                 break;
 
             case R.id.resetBtn:
                 Toast.makeText(ManualEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this,ManualEntry.class));
                 break;
+
+
 
 
             case R.id.submitBtn:
@@ -109,14 +114,53 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
 
     private void searching() {
 
-        TextView textLength = findViewById(R.id.editTextTextPersonName7);
+        TextView textDepth= findViewById(R.id.editTextTextPersonName7);
         TextView textHeight = findViewById(R.id.editTextTextPersonName11);
         TextView textWidth = findViewById(R.id.editTextTextPersonName12);
 
-        String lengthSearch = textLength.getText().toString().trim();
-        String widthSearch = textWidth.getText().toString().trim();
 
-        goLink("https://www.wayfair.ie/filters/furniture/sb2/desks-c1774332-p86169~0~"+lengthSearch+"-p86170~0~"+widthSearch+".html");
+
+        int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());;
+        String height = String.valueOf(hUserInput);
+        StringBuilder sbh = new StringBuilder();
+        sbh.append(height);
+
+        while(hUserInput > 60) {
+
+            //System.out.println(userInput);
+            hUserInput--;
+            sbh.append(","+hUserInput);
+            System.out.println(sbh.toString());
+            height=sbh.toString();
+        }
+        int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());;
+        String depth = String.valueOf(dUserInput);
+        StringBuilder sbl = new StringBuilder();
+        sbl.append(depth);
+
+        while(dUserInput > 48) {
+
+            //System.out.println(userInput);
+            dUserInput--;
+            sbl.append(","+dUserInput);
+            System.out.println(sbl.toString());
+            depth=sbl.toString();
+        }
+        int wUserInput = Integer.parseInt(textDepth.getText().toString().trim());;
+        String width = String.valueOf(wUserInput);
+        StringBuilder sbw = new StringBuilder();
+        sbl.append(width);
+
+        while(wUserInput > 84) {
+
+            //System.out.println(userInput);
+            wUserInput--;
+            sbw.append(","+wUserInput);
+            System.out.println(sbw.toString());
+            width=sbl.toString();
+        }
+
+        goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm="+width+"&pa_depth-cm="+depth+"&pa_height-cm="+height);
 
 
     }

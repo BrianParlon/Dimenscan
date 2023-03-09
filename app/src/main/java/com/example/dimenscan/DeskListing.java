@@ -31,6 +31,7 @@ public class DeskListing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desk_listing);
 
+
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -67,6 +68,7 @@ public class DeskListing extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
         Document doc,doc2;
+        String name,img;
             try {
                 doc = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=84&pa_depth-cm=48&pa_height-cm=76").get();
                 Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
@@ -93,6 +95,34 @@ public class DeskListing extends AppCompatActivity {
                         i++;
                     }
                 }
+
+//                //Get Document object after parsing the html from given url.
+//                doc = Jsoup.connect("https://www.wayfair.ie/filters/furniture/sb2/rectangular-desk-desks-c1774332-a331~537-p86169~250~1800.html").get();
+//
+//                //Get images from document object.
+//                Elements images =
+//                        doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+//
+//                doc2 = Jsoup.connect("https://www.wayfair.ie/filters/furniture/sb2/rectangular-desk-desks-c1774332-a331~537-p86169~250~1800.html").get();
+//                Elements texts = doc2.select("h2.kb51y90_6101 kb51y91_6101");
+//                //Iterate images and print image attributes.
+//                int i =0;
+//                for (Element image : images) {
+//                    System.out.println("Image Source: " + image.attr("src"));
+//                    String imgUrl = image.attr("src");
+//
+//                    String title = texts.select("h2.kb51y90_6101 kb51y91_6101").select("span.StyledBox-owpd5f-0 BoxV2___StyledStyledBox-sc-1wnmyqq-0 eQMeyi").eq(i).text();
+//
+//
+//                    System.out.println("Desk name " + title);
+//                    String txt = texts.text();
+//
+//
+//                    parseItems.add(new ParseItem(imgUrl, title));
+//                    Log.d("items", "img: " + imgUrl + " . title: " + title);
+//                    i++;
+//
+//                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
