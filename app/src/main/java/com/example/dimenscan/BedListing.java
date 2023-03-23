@@ -67,6 +67,7 @@ public class BedListing extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             Document doc,doc2;
+            String depth=null,width=null;
             try {
                 doc = Jsoup.connect("https://flanagans.ie/collections/furniture/bedroom/beds/").get();
                 Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
@@ -88,7 +89,7 @@ public class BedListing extends AppCompatActivity {
                         System.out.println("Desk name " + title);
 
                         //adds items so that they can be viewed in the recyclerview
-                        parseItems.add(new ParseItem(imgUrl, title));
+                        parseItems.add(new ParseItem(imgUrl, title,depth,width));
                         Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }

@@ -25,8 +25,8 @@ public class PhotoOrManual extends AppCompatActivity implements View.OnClickList
         desk =(Button) findViewById(R.id.deskBtn);
         desk.setOnClickListener(this);
 
-        man =(Button) findViewById(R.id.camera_dim);
-        man.setOnClickListener(this);
+//        man =(Button) findViewById(R.id.camera_dim);
+//        man.setOnClickListener(this);
 
 
 
@@ -48,8 +48,8 @@ public class PhotoOrManual extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this,BedEntry.class));
                 break;
 
-            case R.id.camera_dim:
-                startActivity(new Intent(this,CameraWork.class));
+//            case R.id.camera_dim:
+//                startActivity(new Intent(this,CameraWork.class));
         }
     }
 }

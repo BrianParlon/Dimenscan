@@ -40,6 +40,11 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
     private String onlineUserId;
     private DatabaseReference reference;
     String lengConv, hghtConv, wthConv ;
+    private String goLink;
+    public static String lengthValue;
+    public static String heightValue;
+    public static String widthValue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,6 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
 
         test = (Button) findViewById(R.id.onlineTest);
         test.setOnClickListener(this);
-
 
 
         conv = (Button) findViewById(R.id.convBtn);
@@ -77,6 +81,8 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         heightCon = (TextView) findViewById(R.id.heightConv);
         widthCon = (TextView) findViewById(R.id.widthConv);
 
+
+
     }
 
     @Override
@@ -84,10 +90,14 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.convBtn:
                 Toast.makeText(ManualEntry.this,"Dimensions converted",Toast.LENGTH_LONG).show();
-                searching();
+                conversion();
+               // searching();
                 break;
             case R.id.onlineTest:
                 Toast.makeText(ManualEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
+//                lengthValue = length.getText().toString().trim();
+//                heightValue = height.getText().toString().trim();
+//                widthValue = width.getText().toString().trim();
                 startActivity(new Intent(this, DeskListing.class));
                 break;
 
@@ -100,9 +110,6 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
                 Toast.makeText(ManualEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this,ManualEntry.class));
                 break;
-
-
-
 
             case R.id.submitBtn:
                 saveDimensions();
@@ -163,10 +170,16 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm="+width+"&pa_depth-cm="+depth+"&pa_height-cm="+height);
 
 
+
     }
+
     private void goLink(String s) {
         Uri uri = Uri.parse(s);
         startActivity(new Intent(Intent.ACTION_VIEW,uri));
+        goLink = s;
+    }
+    public String getGoLink() {
+        return goLink;
     }
 
     private void saveDimensions(){
@@ -227,4 +240,5 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
 
 
     }
+
 }

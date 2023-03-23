@@ -1,6 +1,7 @@
 package com.example.dimenscan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,18 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
             holder.textView.setText(parseItem.getTitle());
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent deskIntent = new Intent(context, DeskInfo.class);
+                deskIntent.putExtra("title", parseItem.getTitle());
+                deskIntent.putExtra("imageUrl", parseItem.getImgUrl());
+                deskIntent.putExtra("depth",parseItem.getDepth());
+                deskIntent.putExtra("width",parseItem.getWidth());
+
+                context.startActivity(deskIntent);
+            }
+        });
     }
 
     @Override

@@ -79,8 +79,6 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
             case R.id.testBed:
                 Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, BedListing.class));
-
-
                 break;
 
             case R.id.bResetBtn:

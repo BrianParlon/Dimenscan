@@ -29,7 +29,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference reference;
     private String userId;
     private Boolean isOpen=false;
-     Button btnPicture,newProd,saved;
+     Button btnPicture,newProd,saved,display;
      ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         newProd = (Button) findViewById(R.id.button5);
         newProd.setOnClickListener(this);
 
-        btnPicture = (Button) findViewById(R.id.camera);
-        btnPicture.setOnClickListener(this);
+
+        display = (Button) findViewById(R.id.displayRoom);
+        display.setOnClickListener(this);
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -90,10 +91,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, RecycleView.class));
                 break;
 
-            case R.id.camera:
-                camera();
-                Toast.makeText(this, "button pressed", Toast.LENGTH_SHORT).show();
+                case R.id.displayRoom:
+                startActivity(new Intent(this, ViewTable.class));
                 break;
+
 
 
         }
