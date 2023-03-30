@@ -14,10 +14,12 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -25,11 +27,27 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class ViewTable extends AppCompatActivity implements View.OnClickListener {
+    private FirebaseUser mUser;
+    private String userId;
+    private FirebaseAuth mAuth;
+    private String onlineUserId;
+    private DatabaseReference reference;
 
     int counter;
     private XYPlot plot;
@@ -51,7 +69,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double lastTouchX;
     private double lastTouchY;
 
-    Button rotation;
+    Button rotation,save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +78,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         rotation = (Button)findViewById(R.id.button10);
         rotation.setOnClickListener(this);
+
+        save = (Button)findViewById(R.id.saveButton);
+        save.setOnClickListener(this);
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
@@ -86,6 +107,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
         plot.setDomainBoundaries(0, roomWidth, BoundaryMode.FIXED);
 
+        plot.setDrawingCacheEnabled(true);
         // touch to move the desk
         plot.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -118,20 +140,29 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
             case R.id.button10:
                 rotation();
                 break;
+            case R.id.saveButton:
+//                    Toast.makeText(ViewTable.this,"Testing Online",Toast.LENGTH_LONG).show();
+                    saveImage();
+
+                break;
         }
     }
 
 
-  public void rotation(){
-      //create
-      double temporary = deskWidth;
-      deskWidth = deskHeight;
-      deskHeight = temporary;
+    public void saveImage()  {
 
-      updateDeskSize();
+    }
+
+    public void rotation(){
+        //create
+        double temporary = deskWidth;
+        deskWidth = deskHeight;
+        deskHeight = temporary;
+
+        updateDeskSize();
 
 
-  }
+    }
 
     private void updateDeskSize() {
         //List of x and y values for desks
