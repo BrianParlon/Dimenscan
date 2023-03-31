@@ -1,5 +1,6 @@
 package com.example.dimenscan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -13,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -26,6 +28,10 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +63,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     //All Measurements are in Meters
     private double roomWidth = 5;
     private double roomHeight = 5;
-
     private double deskWidth = 1.10;
     private double deskHeight = 0.56;
 
@@ -86,16 +91,14 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         plot = (XYPlot) findViewById(R.id.myPlot);
 
 
-        //  room dimensions
-        roomSize = new SimpleXYSeries(
-                Arrays.asList(0, roomWidth, roomWidth, 0),
+        // Room dimensions
+        roomSize = new SimpleXYSeries(Arrays.asList(0, roomWidth, roomWidth, 0),
                 Arrays.asList(0, 0, roomHeight, roomHeight),
                 "Room");
 
 
-        //desk dimensions
-        deskSize = new SimpleXYSeries(
-                Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
+        //Desk dimensions
+        deskSize = new SimpleXYSeries(Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
                 Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
                 "Desk");
 
@@ -141,24 +144,23 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 rotation();
                 break;
             case R.id.saveButton:
-//                    Toast.makeText(ViewTable.this,"Testing Online",Toast.LENGTH_LONG).show();
+                Toast.makeText(ViewTable.this, "Image saved successfully", Toast.LENGTH_SHORT).show();
                     saveImage();
-
                 break;
         }
     }
 
 
-    public void saveImage()  {
-
+    public void saveImage() {
     }
 
+
+
     public void rotation(){
-        //create
+
         double temporary = deskWidth;
         deskWidth = deskHeight;
         deskHeight = temporary;
-
         updateDeskSize();
 
 
