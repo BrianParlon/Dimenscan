@@ -55,7 +55,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private String onlineUserId;
     private DatabaseReference reference;
 
-    int counter;
     private XYPlot plot;
     private XYSeries roomSize;
     private XYSeries deskSize;
@@ -63,13 +62,14 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     //All Measurements are in Meters
     private double roomWidth = 5;
     private double roomHeight = 5;
-    private double deskWidth = 1.10;
-    private double deskHeight = 0.56;
+
+    private double deskWidth = 0.48;
+    private double deskHeight = 0.84;
 
     //distance from left wall
-    private double deskX = 1.0;
-    //distance from right wall
-    private double deskY = 1.5;
+    private double deskX = 2.0;
+    //distance from bottom wall
+    private double deskY = 2.5;
 
     private double lastTouchX;
     private double lastTouchY;
@@ -152,6 +152,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
 
     public void saveImage() {
+
     }
 
 
