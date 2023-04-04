@@ -18,15 +18,14 @@
         android:layout_marginBottom="50dp">
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/CreateItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="550dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="0dp"
-            android:text="@string/Save">
-
+            android:text="Create Object">
         </Button>
 
 

@@ -1,26 +1,17 @@
 package com.example.dimenscan;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidplot.xy.BoundaryMode;
@@ -28,23 +19,11 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,7 +53,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double lastTouchX;
     private double lastTouchY;
 
-    Button rotation,save;
+    Button rotation,create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +63,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         rotation = (Button)findViewById(R.id.button10);
         rotation.setOnClickListener(this);
 
-        save = (Button)findViewById(R.id.saveButton);
-        save.setOnClickListener(this);
+        create = (Button)findViewById(R.id.CreateItem);
+        create.setOnClickListener(this);
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
@@ -143,28 +122,69 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
             case R.id.button10:
                 rotation();
                 break;
-            case R.id.saveButton:
+            case R.id.CreateItem:
                 Toast.makeText(ViewTable.this, "Image saved successfully", Toast.LENGTH_SHORT).show();
-                    saveImage();
+                objectDialog();
                 break;
         }
     }
 
 
-    public void saveImage() {
+    public void objectDialog() {
+        // Inflate the dialog layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.object_dialog, null);
 
+        // Find the EditTexts in the dialog layout
+        EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
+        EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
+        EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
+
+        // Build the dialog
+        AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
+        objDialog.setTitle("Add Object");
+        objDialog.setView(dialogView);
+        objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Parse the width and height entered by the user
+                double width = Double.parseDouble(widthTxt.getText().toString());
+                double height = Double.parseDouble(heightTxt.getText().toString());
+                String obj = objectTxt.getText().toString();
+
+                // Add the new object to the plot
+                addingNewObject(width, height,obj);
+            }
+        });
+        objDialog.setNegativeButton("Cancel", null);
+        // Show the dialog
+        objDialog.show();
     }
 
+    private void addingNewObject(double width, double height, String objName) {
+        // Calculate the position of the new object
+        // by calculating x and y values by the widht and room height it ensures
+        // it will be inside the room
+        double x = Math.random() * (roomWidth - width);
+        double y = Math.random() * (roomHeight - height);
 
+        // Create the XYSeries for the new object
+        XYSeries objectSize = new SimpleXYSeries(
+                Arrays.asList(x, x + width, x + width, x),
+                Arrays.asList(y, y, y + height, y + height),
+                objName );
+
+        // Add the new object to the plot
+        plot.addSeries(objectSize, new LineAndPointFormatter(
+                ContextCompat.getColor(this, R.color.teal_200),
+                null, R.color.teal_200, null));
+    }
 
     public void rotation(){
-
         double temporary = deskWidth;
         deskWidth = deskHeight;
         deskHeight = temporary;
         updateDeskSize();
-
-
     }
 
     private void updateDeskSize() {
@@ -179,7 +199,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         deskSize = new SimpleXYSeries(xValues, yValues, "Desk");
         // Add desk to plot
         plot.addSeries(deskSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
-
         plot.redraw();
     }
 

@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter the dimensions of the new object below:" />
+
+    <EditText
+        android:id="@+id/widthEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Width (m)" />
+
+    <EditText
+        android:id="@+id/heightEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Height (m)" />
+
+    <EditText
+        android:id="@+id/objectNameEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Object name" />
+
+</LinearLayout>
