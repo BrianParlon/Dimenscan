@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
     private XYPlot plot;
     private XYSeries roomSize;
-    private XYSeries deskSize;
+    private RoomObject desk;
+    private List<RoomObject> roomObject = new ArrayList<>();
+
 
     //All Measurements are in Meters
     private double roomWidth = 5;
@@ -70,20 +73,25 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         plot = (XYPlot) findViewById(R.id.myPlot);
 
 
+
         // Room dimensions
         roomSize = new SimpleXYSeries(Arrays.asList(0, roomWidth, roomWidth, 0),
                 Arrays.asList(0, 0, roomHeight, roomHeight),
                 "Room");
 
 
-        //Desk dimensions
-        deskSize = new SimpleXYSeries(Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
-                Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
-                "Desk");
+//        //Desk dimensions
+//        deskSize = new SimpleXYSeries(Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
+//                Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
+//                "Desk");
+        desk = new RoomObject(deskWidth, deskHeight, "Desk", deskX, deskY);
+        desk.updateObjectSize();
+        roomObject.add(desk);
+
 
         // add to the plot
         plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
-        plot.addSeries(deskSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+        plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
 
         // set the range of plot to match the room dimensions
         plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
@@ -95,19 +103,29 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-
                     case MotionEvent.ACTION_DOWN:
                         lastTouchX = event.getX();
                         lastTouchY = event.getY();
 
+                        double touchX = lastTouchX / plot.getWidth() * roomWidth;
+                        double touchY = roomHeight - lastTouchY / plot.getHeight() * roomHeight;
+
+                        for (RoomObject obj : roomObject) {
+                            if (touchX >= obj.x && touchX <= obj.x + obj.width &&
+                                    touchY >= obj.y && touchY <= obj.y + obj.height) {
+                                desk = obj;
+                                break;
+                            }
+                        }
                         break;
 
                     case MotionEvent.ACTION_MOVE:
                         double deltaX = (event.getX() - lastTouchX) / plot.getWidth() * roomWidth;
                         double deltaY = -(event.getY() - lastTouchY) / plot.getHeight() * roomHeight;
-                        deskX += deltaX;
-                        deskY += deltaY;
-                        updateDeskSize();
+                        desk.x += deltaX;
+                        desk.y += deltaY;
+                        desk.updateObjectSize();
+                        updatePlot();
                         lastTouchX = event.getX();
                         lastTouchY = event.getY();
                         break;
@@ -116,6 +134,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
             }
         });
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -123,7 +142,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 rotation();
                 break;
             case R.id.CreateItem:
-                Toast.makeText(ViewTable.this, "Image saved successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
         }
@@ -134,13 +153,11 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         // Inflate the dialog layout
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.object_dialog, null);
-
         // Find the EditTexts in the dialog layout
         EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
         EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
         EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
 
-        // Build the dialog
         AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
         objDialog.setTitle("Add Object");
         objDialog.setView(dialogView);
@@ -157,7 +174,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
             }
         });
         objDialog.setNegativeButton("Cancel", null);
-        // Show the dialog
         objDialog.show();
     }
 
@@ -168,38 +184,30 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         double x = Math.random() * (roomWidth - width);
         double y = Math.random() * (roomHeight - height);
 
-        // Create the XYSeries for the new object
-        XYSeries objectSize = new SimpleXYSeries(
-                Arrays.asList(x, x + width, x + width, x),
-                Arrays.asList(y, y, y + height, y + height),
-                objName );
-
-        // Add the new object to the plot
-        plot.addSeries(objectSize, new LineAndPointFormatter(
-                ContextCompat.getColor(this, R.color.teal_200),
-                null, R.color.teal_200, null));
+        RoomObject newObject = new RoomObject(width, height, objName, x, y);
+        newObject.updateObjectSize();
+        roomObject.add(newObject);
+        updatePlot();
     }
+
+    private void updatePlot() {
+    plot.clear();
+    plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
+
+    for (RoomObject obj : roomObject) {
+        obj.updateObjectSize();
+        plot.addSeries(obj.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+    }
+
+    plot.redraw();
+}
 
     public void rotation(){
-        double temporary = deskWidth;
-        deskWidth = deskHeight;
-        deskHeight = temporary;
-        updateDeskSize();
-    }
-
-    private void updateDeskSize() {
-        //List of x and y values for desks
-        List<Number>  xValues = Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX);
-        List<Number> yValues; yValues = Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight);
-
-        // Remove the previous desk series
-        plot.removeSeries(deskSize);
-
-        // Create a new desk size from xand y values
-        deskSize = new SimpleXYSeries(xValues, yValues, "Desk");
-        // Add desk to plot
-        plot.addSeries(deskSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
-        plot.redraw();
+        double temporary = desk.width;
+        desk.width= desk.height;
+        desk.height = temporary;
+        desk.updateObjectSize();
+        updatePlot();
     }
 
 

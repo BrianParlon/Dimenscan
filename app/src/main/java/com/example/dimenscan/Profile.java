@@ -100,20 +100,5 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void camera() {
 
-        btnPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivity(intent);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
 }
