@@ -25,8 +25,7 @@
             android:layout_marginTop="550dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="0dp"
-            android:text="Create Object">
-        </Button>
+            android:text="Create Object"></Button>
 
 
     </LinearLayout>
@@ -41,4 +40,13 @@
         android:text="@string/rotate">
 
     </Button>
+    <Button
+        android:id="@+id/saveItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="620dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="0dp"
+        android:text="Save Image"></Button>
 </RelativeLayout>

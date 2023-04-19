@@ -1,10 +1,12 @@
 package com.example.dimenscan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,10 +22,16 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +64,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double lastTouchX;
     private double lastTouchY;
 
-    Button rotation,create;
+    Button rotation,create,save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         create = (Button)findViewById(R.id.CreateItem);
         create.setOnClickListener(this);
+
+        save = (Button)findViewById(R.id.saveItem);
+        save.setOnClickListener(this);
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
@@ -139,13 +150,47 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button10:
+                Toast.makeText(this, "Item has been rotated", Toast.LENGTH_SHORT).show();
                 rotation();
                 break;
             case R.id.CreateItem:
                 Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
+                case R.id.saveItem:
+                    uploadToStorage();
+                break;
         }
+    }
+    private Bitmap getPlotBitmap() {
+        plot.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(plot.getDrawingCache());
+        plot.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+    private void uploadToStorage() {
+        //will convert all bitmap images to a PNG format so it can saved to firebaseStorage
+        Bitmap plotBitmap = getPlotBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        plotBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        StorageReference plotImg= storageReference.child("plots/plot"+System.currentTimeMillis()+".png");
+
+        UploadTask uploadPlot = plotImg.putBytes(data);
+        uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ViewTable.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(ViewTable.this, "Error has Occurred.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -159,7 +204,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
 
         AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
-        objDialog.setTitle("Add Object");
+        objDialog.setTitle("Add Object to Room");
         objDialog.setView(dialogView);
         objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
