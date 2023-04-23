@@ -49,7 +49,6 @@ public class ViewDesk extends AppCompatActivity implements View.OnClickListener 
     private RoomObject desk;
     private List<RoomObject> roomObject = new ArrayList<>();
 
-
     //All Measurements are in Meters
     private double roomWidth = 5;
     private double roomHeight = 5;

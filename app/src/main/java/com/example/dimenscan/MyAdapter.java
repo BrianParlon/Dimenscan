@@ -55,8 +55,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-
-
         final Dimension dim = dims.get(position);
 
         String dimHeight = "Height: "+dim.getHeight();

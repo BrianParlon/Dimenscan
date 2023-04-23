@@ -3,6 +3,7 @@ package com.example.dimenscan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class ManualEntry extends AppCompatActivity implements View.OnClickListener {
-    Button submit, reset, test;
+    Button submit, reset, test,online;
     EditText length, height, width;
     TextView lengCon, heightCon, widthCon;
     private FirebaseUser mUser;
@@ -40,6 +41,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
     private String onlineUserId;
     private DatabaseReference reference;
 
+    private Context context;
     private String goLink;
 
 
@@ -55,6 +57,11 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference().child("desk_dimensions").child(onlineUserId);
         userId = mUser.getUid();
+
+        this.context = this;
+
+        online = (Button)findViewById(R.id.TestingLink);
+        online.setOnClickListener(this);
 
         test = (Button) findViewById(R.id.onlineTest);
         test.setOnClickListener(this);
@@ -79,12 +86,13 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.onlineTest:
                 Toast.makeText(ManualEntry.this, "Testing Online", Toast.LENGTH_LONG).show();
+            //    searching();
                 startActivity(new Intent(this, DeskListing.class));
                 break;
 
             case R.id.TestingLink:
                 Toast.makeText(ManualEntry.this, "Displaying website", Toast.LENGTH_LONG).show();
-                searching();
+                searching(getApplicationContext());
                 break;
 
             case R.id.resetBtn:
@@ -99,7 +107,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void searching() {
+    private void searching(Context context) {
 
         TextView textDepth = findViewById(R.id.editTextTextPersonName7);
         TextView textHeight = findViewById(R.id.editTextTextPersonName11);
@@ -107,7 +115,7 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
 
 
         int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());
-        ;
+
         String height = String.valueOf(hUserInput);
         StringBuilder sbh = new StringBuilder();
         sbh.append(height);
@@ -149,8 +157,14 @@ public class ManualEntry extends AppCompatActivity implements View.OnClickListen
             width = sbl.toString();
         }
 
-        goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);
+       // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);
 
+        Intent deskEntry  = new Intent(context, DeskListing.class);
+        deskEntry.putExtra("width", width);
+        deskEntry.putExtra("depth", depth);
+        deskEntry.putExtra("height", height);
+        deskEntry.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(deskEntry);
 
     }
 
