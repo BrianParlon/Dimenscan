@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ViewTable extends AppCompatActivity implements View.OnClickListener {
+public class ViewDesk extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser mUser;
     private String userId;
     private FirebaseAuth mAuth;
@@ -168,11 +168,11 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 rotation();
                 break;
             case R.id.CreateItem:
-                Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewDesk.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
-                case R.id.saveItem:
-                    uploadToStorage();
+            case R.id.saveItem:
+                uploadToStorage();
                 break;
         }
     }
@@ -197,12 +197,12 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(ViewTable.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewDesk.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(ViewTable.this, "Error has Occurred.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewDesk.this, "Error has Occurred.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -238,7 +238,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
     private void addingNewObject(double width, double height, String objName) {
         // Calculate the position of the new object
-        // by calculating x and y values by the widht and room height it ensures
+        // by calculating x and y values by the width and room height it ensures
         // it will be inside the room
         double x = Math.random() * (roomWidth - width);
         double y = Math.random() * (roomHeight - height);
@@ -251,16 +251,16 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     }
 
     private void updatePlot() {
-    plot.clear();
-    plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
+        plot.clear();
+        plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
 
-    for (RoomObject obj : roomObject) {
-        obj.updateObjectSize();
-        plot.addSeries(obj.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+        for (RoomObject obj : roomObject) {
+            obj.updateObjectSize();
+            plot.addSeries(obj.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+        }
+
+        plot.redraw();
     }
-
-    plot.redraw();
-}
 
     public void rotation(){
         double temporary = desk.width;

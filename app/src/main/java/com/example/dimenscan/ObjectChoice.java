@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class PhotoOrManual extends AppCompatActivity implements View.OnClickListener {
-    Button man, cam, desk, table, bed;
+public class ObjectChoice extends AppCompatActivity implements View.OnClickListener {
+    Button desk, table, bed;
 
 
     @Override
@@ -24,11 +24,6 @@ public class PhotoOrManual extends AppCompatActivity implements View.OnClickList
 
         desk =(Button) findViewById(R.id.deskBtn);
         desk.setOnClickListener(this);
-
-//        man =(Button) findViewById(R.id.camera_dim);
-//        man.setOnClickListener(this);
-
-
 
     }
 
@@ -48,8 +43,6 @@ public class PhotoOrManual extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this,BedEntry.class));
                 break;
 
-//            case R.id.camera_dim:
-//                startActivity(new Intent(this,CameraWork.class));
         }
     }
 }

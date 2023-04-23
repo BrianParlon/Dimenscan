@@ -23,6 +23,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
     private String dTitle, dImg,dWidth,dDepth;
     private Button viewRoom;
     private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +48,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
         deskName.setText(dTitle);
         deskWidth.setText(dWidth);
         deskDepth.setText(dDepth);
-
-
-
-
-
+        context = this;
     }
 
     @Override
@@ -60,7 +57,6 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
             case R.id.roomView:
                 Toast.makeText(DeskInfo.this, "Viewing table in room", Toast.LENGTH_LONG).show();
                 viewDeskRoom();
-
                 break;
         }
     }
