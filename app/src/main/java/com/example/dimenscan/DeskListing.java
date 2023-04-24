@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 public class DeskListing extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ParseAdapter adapter;
+    private DeskParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
     private ProgressBar progressBar;
     private Context context;
@@ -42,7 +42,7 @@ public class DeskListing extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ParseAdapter(parseItems, this);
+        adapter = new DeskParseAdapter(parseItems, this);
         recyclerView.setAdapter(adapter);
 
         this.context= context;

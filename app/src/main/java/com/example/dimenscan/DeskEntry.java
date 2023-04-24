@@ -38,7 +38,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_entry);
+        setContentView(R.layout.activity_desk_entry);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         onlineUserId = mUser.getUid();

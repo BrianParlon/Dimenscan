@@ -16,6 +16,13 @@
         android:theme="@style/Theme.DimenScan"
         tools:targetApi="31">
         <activity
+            android:name=".TableInfo"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ViewBed"
             android:exported="false">
             <meta-data
@@ -80,13 +87,6 @@
         </activity>
         <activity
             android:name=".RecycleView"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".CameraWork"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -25,44 +25,44 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.nio.InvalidMarkException;
 
-public class DeskInfo extends AppCompatActivity implements View.OnClickListener {
+public class TableInfo extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView deskName,deskWidth,deskDepth,deskPrice;
-    private ImageView deskImage;
-    private String dTitle, dImg,dWidth,dDepth,dDeskUrl,dPrice;
+    private TextView tableName,tableWidth,tableDepth,tablePrice;
+    private ImageView tableImg;
+    private String tTitle, tImg,tWidth,tDepth,tTableUrl,tPrice;
     private Button viewRoom;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_desk_info);
+        setContentView(R.layout.activity_table_info);
 
-        deskName =findViewById(R.id.deskTitle);
-        deskImage =findViewById(R.id.deskPicture);
+        tableName =findViewById(R.id.tableTitle);
+        tableImg=findViewById(R.id.tablePicture);
 
-        deskDepth =findViewById(R.id.deskDepth);
-        deskWidth =findViewById(R.id.deskWidth);
-        deskPrice = findViewById(R.id.priceText);
+        tableDepth =findViewById(R.id.tableDepth);
+        tableWidth =findViewById(R.id.tableWidth);
+        tablePrice = findViewById(R.id.priceText);
 
 
-        Intent deskIntent = getIntent();
-        dTitle=deskIntent.getStringExtra("title");
-        dImg= deskIntent.getStringExtra("imageUrl");
-        dWidth=deskIntent.getStringExtra("width");
-        dDepth=deskIntent.getStringExtra("depth");
-        dDeskUrl=deskIntent.getStringExtra("deskUrl");
+        Intent tableIntent = getIntent();
+        tTitle=tableIntent.getStringExtra("title");
+        tImg= tableIntent.getStringExtra("imageUrl");
+        tWidth=tableIntent.getStringExtra("width");
+        tDepth=tableIntent.getStringExtra("depth");
+        tTableUrl=tableIntent.getStringExtra("tableUrl");
 
         viewRoom = (Button)findViewById(R.id.roomView);
         viewRoom.setOnClickListener(this);
 
-        Picasso.get().load(dImg).into(deskImage);
-        deskName.setText(dTitle);
+        Picasso.get().load(tImg).into(tableImg);
+        tableName.setText(tTitle);
 //        deskWidth.setText(dWidth);
 //        deskDepth.setText(dDepth);
         context = this;
 
-        DeskInfo.Content content = new DeskInfo.Content();
+        TableInfo.Content content = new TableInfo.Content();
         content.execute();
     }
     private class Content extends AsyncTask<Void,Void,Void> {
@@ -70,7 +70,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Document doc = Jsoup.connect(dDeskUrl).get();
+                Document doc = Jsoup.connect(tTableUrl).get();
                 Elements dimensions = doc.select("table.woocommerce-product-attributes");
 
                 for (Element attribute : dimensions) {
@@ -82,16 +82,16 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
                         String value = elementValue.get(i).text().trim();
 
                         if (label.equalsIgnoreCase("Width (cm)")) {
-                            dWidth = value;
+                            tWidth = value;
                         } else if (label.equalsIgnoreCase("Depth (cm)")) {
-                            dDepth = value;
+                            tDepth = value;
                         }
                     }
                 }
                 Elements prices = doc.select("p.price span.woocommerce-Price-amount");
                 if (!prices.isEmpty()) {
                     String priceString = prices.first().text();
-                    dPrice = priceString;
+                    tPrice = priceString;
                 }
 
             } catch (IOException e) {
@@ -104,9 +104,9 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            deskWidth.setText(dWidth);
-            deskDepth.setText(dDepth);
-            deskPrice.setText(dPrice);
+            tableWidth.setText(tWidth);
+            tableDepth.setText(tDepth);
+            tablePrice.setText(tPrice);
 
         }
     }
@@ -115,16 +115,16 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.roomView:
-                Toast.makeText(DeskInfo.this, "Viewing desk in room", Toast.LENGTH_LONG).show();
+                Toast.makeText(TableInfo.this, "Viewing table in room", Toast.LENGTH_LONG).show();
                 viewDeskRoom();
                 break;
         }
     }
 
     public void viewDeskRoom(){
-        Intent deskRoom = new Intent(context, ViewDesk.class);
-        deskRoom.putExtra("depth",deskDepth.getText());
-        deskRoom.putExtra("width",deskWidth.getText());
-        context.startActivity(deskRoom);
+        Intent tableRoom = new Intent(context, ViewTable.class);
+        tableRoom.putExtra("depth",tableDepth.getText());
+        tableRoom.putExtra("width",tableWidth.getText());
+        context.startActivity(tableRoom);
     }
 }

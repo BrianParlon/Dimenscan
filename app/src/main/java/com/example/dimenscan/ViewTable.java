@@ -82,16 +82,16 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
 
-        Drawable image = ContextCompat.getDrawable(this,R.drawable.floor);
-        plot.setBackground(image);
+
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
 
 
-        Intent deskIntent = getIntent();
-        deskWidth = Double.parseDouble(deskIntent.getStringExtra("width"));
-        deskHeight= Double.parseDouble(deskIntent.getStringExtra("depth"));
+        Intent tableRoom = getIntent();
+        deskWidth = Double.parseDouble(tableRoom.getStringExtra("width"));
+        deskHeight= Double.parseDouble(tableRoom.getStringExtra("depth"));
+
         deskHeight = deskHeight/100;
         deskWidth = deskWidth/100;
 
@@ -107,7 +107,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 //                Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
 //                "Desk");
 
-        desk = new RoomObject(deskWidth, deskHeight, "Desk", deskX, deskY);
+        desk = new RoomObject(deskWidth, deskHeight, "Table", deskX, deskY);
         desk.updateObjectSize();
         roomObject.add(desk);
 

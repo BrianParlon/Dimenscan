@@ -15,12 +15,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> {
+public class TableParseAdapter extends RecyclerView.Adapter<TableParseAdapter.ViewHolder> {
 
     private ArrayList<ParseItem> parseItems;
     private Context context;
 
-    public ParseAdapter(ArrayList<ParseItem> parseItems, Context context){
+    public TableParseAdapter(ArrayList<ParseItem> parseItems, Context context){
         this.parseItems= parseItems;
         this.context= context;
 
@@ -28,13 +28,14 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ParseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.parsing_items, parent,false);
+    public TableParseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.parsing_items, parent,false);
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TableParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
         holder.textView.setText(parseItem.getTitle());
         if(parseItem.getImgUrl().isEmpty()){
@@ -48,14 +49,14 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent deskIntent = new Intent(context, DeskInfo.class);
-                deskIntent.putExtra("title", parseItem.getTitle());
-                deskIntent.putExtra("imageUrl", parseItem.getImgUrl());
-                deskIntent.putExtra("depth",parseItem.getDepth());
-                deskIntent.putExtra("width",parseItem.getWidth());
-                deskIntent.putExtra("deskUrl",parseItem.getDeskUrl());
+                Intent tableIntent = new Intent(context, TableInfo.class);
+                tableIntent.putExtra("title", parseItem.getTitle());
+                tableIntent.putExtra("imageUrl", parseItem.getImgUrl());
+                tableIntent.putExtra("depth",parseItem.getDepth());
+                tableIntent.putExtra("width",parseItem.getWidth());
+                tableIntent.putExtra("tableUrl",parseItem.getDeskUrl());
 
-                context.startActivity(deskIntent);
+                context.startActivity(tableIntent);
             }
         });
     }

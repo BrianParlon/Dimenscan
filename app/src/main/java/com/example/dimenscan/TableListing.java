@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +19,16 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TableListing extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ParseAdapter adapter;
+    private TableParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
     private ProgressBar progressBar;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,9 @@ public class TableListing extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ParseAdapter(parseItems, this);
+        adapter = new TableParseAdapter(parseItems, this);
         recyclerView.setAdapter(adapter);
+        this.context= context;
 
         TableListing.Content content = new TableListing.Content();
         content.execute();
@@ -79,17 +84,42 @@ public class TableListing extends AppCompatActivity {
                             .equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
                         System.out.println("none");
                     } else {
-                        //images
                         System.out.println("Image Source: " + image.attr("src"));
                         String imgUrl = image.attr("src");
 
-                        //title
                         String title = texts.select("div.title-wrapper").select("a").eq(i).text();
-                        System.out.println("Desk name " + title);
+
+                        System.out.println("Table name " + title);
+                        String txt = texts.text();
+
+                        String tableUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
+                        System.out.println(tableUrl);
+
+                        Document tableDetails = Jsoup.connect(tableUrl).get();
+                        Element dimensions = tableDetails.select("div.woocommerce-Tabs-panel--description").first();
+                        String dimensionsText = dimensions.text();
+
+                        // Extract Width
+                        Pattern wPattern = Pattern.compile("W(\\d+)cm");
+                        Matcher wMatcher = wPattern.matcher(dimensionsText);
+                        String tableWidth = "Not found";
+                        if (wMatcher.find()) {
+                            tableWidth = wMatcher.group(1);
+                        }
+                        System.out.println("Width: " + tableWidth);
+
+                        // Extract Depth
+                        Pattern dPattern = Pattern.compile("D(\\d+)cm");
+                        Matcher dMatcher = dPattern.matcher(dimensionsText);
+                        String tableDepth = "Not found";
+                        if (dMatcher.find()) {
+                            tableDepth = dMatcher.group(1);
+                        }
+                        System.out.println("Depth: " + tableDepth);
 
                         //adds items so that they can be viewed in the recyclerview
                         //need to change the items added to adapter below to bring over width, height ,url and price
-                        parseItems.add(new ParseItem(imgUrl, title,null,null,null));
+                        parseItems.add(new ParseItem(imgUrl, title,tableWidth,tableDepth,tableUrl));
                         Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }

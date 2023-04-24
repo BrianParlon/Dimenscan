@@ -3,6 +3,7 @@ package com.example.dimenscan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
     private FirebaseAuth mAuth;
     private String onlineUserId;
     private DatabaseReference reference;
+    private Context context;
 
 
     @Override
@@ -41,6 +43,8 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference  = FirebaseDatabase.getInstance().getReference().child("table_dimensions").child(onlineUserId);
         userId = mUser.getUid();
+
+        this.context = this;
 
         test = (Button) findViewById(R.id.testTable);
         test.setOnClickListener(this);
@@ -76,11 +80,72 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
 
 
             case R.id.tSubmitBtn:
-                saveDimensions();
+                searching(getApplicationContext());
 
                 break;
 
         }
+    }
+
+    private void searching(Context context) {
+
+        TextView textDepth = findViewById(R.id.tLength);
+        TextView textHeight = findViewById(R.id.tHeight);
+        TextView textWidth = findViewById(R.id.tWidth);
+
+
+        int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());
+
+        String height = String.valueOf(hUserInput);
+        StringBuilder sbh = new StringBuilder();
+        sbh.append(height);
+
+        while (hUserInput > 60) {
+
+            //System.out.println(userInput);
+            hUserInput--;
+            sbh.append("," + hUserInput);
+            System.out.println(sbh.toString());
+            height = sbh.toString();
+        }
+        int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
+        ;
+        String depth = String.valueOf(dUserInput);
+        StringBuilder sbl = new StringBuilder();
+        sbl.append(depth);
+
+        while (dUserInput > 48) {
+
+            //System.out.println(userInput);
+            dUserInput--;
+            sbl.append("," + dUserInput);
+            System.out.println(sbl.toString());
+            depth = sbl.toString();
+        }
+        int wUserInput = Integer.parseInt(textWidth.getText().toString().trim());
+        ;
+        String width = String.valueOf(wUserInput);
+        StringBuilder sbw = new StringBuilder();
+        sbl.append(width);
+
+        while (wUserInput > 84) {
+
+            //System.out.println(userInput);
+            wUserInput--;
+            sbw.append("," + wUserInput);
+            System.out.println(sbw.toString());
+            width = sbl.toString();
+        }
+
+        // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);
+
+        Intent tableEntry  = new Intent(context, TableListing.class);
+        tableEntry.putExtra("width", width);
+        tableEntry.putExtra("depth", depth);
+        tableEntry.putExtra("height", height);
+        tableEntry.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(tableEntry);
+
     }
 
 

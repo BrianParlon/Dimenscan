@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class BedListing extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ParseAdapter adapter;
+    private DeskParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
     private ProgressBar progressBar;
 
@@ -36,7 +36,7 @@ public class BedListing extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ParseAdapter(parseItems, this);
+        adapter = new DeskParseAdapter(parseItems, this);
         recyclerView.setAdapter(adapter);
 
         BedListing.Content content = new BedListing.Content();
