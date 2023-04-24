@@ -88,9 +88,9 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
 
-        Intent deskIntent = getIntent();
-        deskWidth = Double.parseDouble(deskIntent.getStringExtra("width"));
-        deskHeight= Double.parseDouble(deskIntent.getStringExtra("depth"));
+        Intent bedIntent = getIntent();
+        deskWidth = Double.parseDouble(bedIntent.getStringExtra("width"));
+        deskHeight= Double.parseDouble(bedIntent.getStringExtra("depth"));
         deskHeight = deskHeight/100;
         deskWidth = deskWidth/100;
 

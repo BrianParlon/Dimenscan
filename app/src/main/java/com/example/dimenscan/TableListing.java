@@ -95,8 +95,8 @@ public class TableListing extends AppCompatActivity {
                         String tableUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
                         System.out.println(tableUrl);
 
-                        Document tableDetails = Jsoup.connect(tableUrl).get();
-                        Element dimensions = tableDetails.select("div.woocommerce-Tabs-panel--description").first();
+                        Document tables = Jsoup.connect(tableUrl).get();
+                        Element dimensions = tables.select("div.woocommerce-Tabs-panel--description").first();
                         String dimensionsText = dimensions.text();
 
                         // Extract Width
