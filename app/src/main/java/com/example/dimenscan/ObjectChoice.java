@@ -32,7 +32,7 @@ public class ObjectChoice extends AppCompatActivity implements View.OnClickListe
         switch(view.getId()){
 
             case R.id.deskBtn:
-                startActivity(new Intent(this,ManualEntry.class));
+                startActivity(new Intent(this, DeskEntry.class));
                 break;
 
             case R.id.tableButton:

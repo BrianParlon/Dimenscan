@@ -93,7 +93,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ManualEntry"
+            android:name=".DeskEntry"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -70,7 +71,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_table);
+        setContentView(R.layout.activity_view_bed);
 
         rotation = (Button)findViewById(R.id.button10);
         rotation.setOnClickListener(this);
@@ -81,9 +82,11 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
 
+
+
+
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
-
 
         Intent deskIntent = getIntent();
         deskWidth = Double.parseDouble(deskIntent.getStringExtra("width"));

@@ -88,7 +88,8 @@ public class TableListing extends AppCompatActivity {
                         System.out.println("Desk name " + title);
 
                         //adds items so that they can be viewed in the recyclerview
-                        parseItems.add(new ParseItem(imgUrl, title,null,null));
+                        //need to change the items added to adapter below to bring over width, height ,url and price
+                        parseItems.add(new ParseItem(imgUrl, title,null,null,null));
                         Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }

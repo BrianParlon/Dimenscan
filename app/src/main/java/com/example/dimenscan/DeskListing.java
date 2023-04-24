@@ -128,8 +128,8 @@ public class DeskListing extends AppCompatActivity {
 
 
                         //adds items so that they can be viewed in the recyclerview
-                        parseItems.add(new ParseItem(imgUrl, title, deskDepth,deskWidth));
-                        Log.d("items", "img: " + imgUrl + " . title: " + title);
+                        parseItems.add(new ParseItem(imgUrl, title, deskDepth,deskWidth,deskUrl));
+                        Log.d("items", "img: " + imgUrl + " . title: " + title+ "DeskUrl"+deskUrl);
                         i++;
                     }
                 }

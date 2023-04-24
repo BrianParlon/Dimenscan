@@ -53,6 +53,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
                 deskIntent.putExtra("imageUrl", parseItem.getImgUrl());
                 deskIntent.putExtra("depth",parseItem.getDepth());
                 deskIntent.putExtra("width",parseItem.getWidth());
+                deskIntent.putExtra("deskUrl",parseItem.getDeskUrl());
 
                 context.startActivity(deskIntent);
             }

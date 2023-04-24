@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -80,6 +81,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
+
+        Drawable image = ContextCompat.getDrawable(this,R.drawable.floor);
+        plot.setBackground(image);
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);

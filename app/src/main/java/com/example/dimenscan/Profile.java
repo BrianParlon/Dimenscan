@@ -88,7 +88,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
 
                 case R.id.displayRoom:
-                startActivity(new Intent(this, ViewTable.class));
+                startActivity(new Intent(this, ViewBed.class));
                 break;
 
 

@@ -89,7 +89,7 @@ public class BedListing extends AppCompatActivity {
                         System.out.println("Desk name " + title);
 
                         //adds items so that they can be viewed in the recyclerview
-                        parseItems.add(new ParseItem(imgUrl, title,depth,width));
+                        parseItems.add(new ParseItem(imgUrl, title,depth,width,null));
                         Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }
