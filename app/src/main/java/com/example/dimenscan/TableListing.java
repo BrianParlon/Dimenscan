@@ -82,18 +82,18 @@ public class TableListing extends AppCompatActivity {
                 for (Element image : images) {
                     if (image.attr("src")
                             .equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
-                        System.out.println("none");
+                   //     System.out.println("none");
                     } else {
-                        System.out.println("Image Source: " + image.attr("src"));
+//                        System.out.println("Image Source: " + image.attr("src"));
                         String imgUrl = image.attr("src");
 
                         String title = texts.select("div.title-wrapper").select("a").eq(i).text();
 
-                        System.out.println("Table name " + title);
-                        String txt = texts.text();
+//                        System.out.println("Table name " + title);
+
 
                         String tableUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
-                        System.out.println(tableUrl);
+//                        System.out.println(tableUrl);
 
                         Document tables = Jsoup.connect(tableUrl).get();
                         Element dimensions = tables.select("div.woocommerce-Tabs-panel--description").first();
@@ -106,7 +106,7 @@ public class TableListing extends AppCompatActivity {
                         if (wMatcher.find()) {
                             tableWidth = wMatcher.group(1);
                         }
-                        System.out.println("Width: " + tableWidth);
+//                        System.out.println("Width: " + tableWidth);
 
                         // Extract Depth
                         Pattern dPattern = Pattern.compile("D(\\d+)cm");
@@ -115,7 +115,7 @@ public class TableListing extends AppCompatActivity {
                         if (dMatcher.find()) {
                             tableDepth = dMatcher.group(1);
                         }
-                        System.out.println("Depth: " + tableDepth);
+//                        System.out.println("Depth: " + tableDepth);
 
                         //adds items so that they can be viewed in the recyclerview
                         //need to change the items added to adapter below to bring over width, height ,url and price

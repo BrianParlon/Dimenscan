@@ -62,11 +62,12 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double deskX = 2.0;
     //distance from bottom wall
     private double deskY = 2.5;
+    private RoomObject lastTouch = null;
 
     private double lastTouchX;
     private double lastTouchY;
 
-    Button rotation,create,save;
+    Button rotation,create,save,removeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
+
+        removeBtn = findViewById(R.id.remove);
+        removeBtn.setOnClickListener(this);
 
 
 
@@ -136,6 +140,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                         for (RoomObject obj : roomObject) {
                             if (touchX >= obj.x && touchX <= obj.x + obj.width &&
                                     touchY >= obj.y && touchY <= obj.y + obj.height) {
+                                lastTouch = obj;
                                 desk = obj;
                                 break;
                             }
@@ -157,6 +162,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                             lastTouchY = event.getY();
                         }
                         break;
+
                 }
                 return true;
             }
@@ -175,11 +181,24 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
+            case R.id.remove:
+                Toast.makeText(this, "Remove", Toast.LENGTH_SHORT).show();
+                removeTouch();
+                break;
                 case R.id.saveItem:
                     uploadToStorage();
                 break;
         }
     }
+
+    private void removeTouch() {
+        if (lastTouch != null) {
+            roomObject.remove(lastTouch);
+            lastTouch = null;
+            updatePlot();
+        }
+    }
+
     private Bitmap getPlotBitmap() {
         plot.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(plot.getDrawingCache());
@@ -195,7 +214,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-        StorageReference plotImg= storageReference.child("plots/plot"+System.currentTimeMillis()+".png");
+        StorageReference plotImg= storageReference.child("table/table"+System.currentTimeMillis()+".png");
 
         UploadTask uploadPlot = plotImg.putBytes(data);
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
