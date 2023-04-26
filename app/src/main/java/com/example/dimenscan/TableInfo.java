@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AsyncPlayer;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
@@ -38,16 +45,26 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.nio.InvalidMarkException;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TableInfo extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView tableName,tableWidth,tableDepth,tablePrice;
+    private TextView tableName,tableWidth,tableDepth,tablePrice,tableHeight;
     private ImageView tableImg;
-    private String tTitle, tImg,tWidth,tDepth,tTableUrl,tPrice;
+    private String tTitle, tImg,tWidth,tDepth,tHeight,tTableUrl,tPrice;
     private Button viewRoom,pay;
     private Context context;
+    private Uri imageUri;
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
+    private FirebaseUser user;
+    private String userId;
+    private FirebaseAuth mAuth;
+    private String onlineUserId;
+    private List<ParseItem> parseItems;
 
     //Stripe information
      String publishableKey ="pk_test_51N0hvLJqlrisGEA5png81SsyJN99wqv7IPdheyT61mB3lBj13qu1sULw1LMvfQmEQpwj7NP9z6sIKCwn1xSvbhDI003cDM9gqG";
@@ -58,19 +75,22 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
      PaymentSheet paymentSheet;
     private boolean customerInitialized = false;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_info);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
+        parseItems = new ArrayList<>();
+        databaseReference= FirebaseDatabase.getInstance().getReference("purchases").child(userId);
+
 
         tableName =findViewById(R.id.tableTitle);
         tableImg=findViewById(R.id.tablePicture);
 
         tableDepth =findViewById(R.id.tableDepth);
         tableWidth =findViewById(R.id.tableWidth);
+        tableHeight= findViewById(R.id.tableHght);
         tablePrice = findViewById(R.id.priceText);
 
         pay = findViewById(R.id.purchase);
@@ -124,7 +144,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
 
 
-                Intent tableIntent = getIntent();
+        Intent tableIntent = getIntent();
         tTitle=tableIntent.getStringExtra("title");
         tImg= tableIntent.getStringExtra("imageUrl");
         tWidth=tableIntent.getStringExtra("width");
@@ -148,6 +168,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
         
         if(paymentSheetResult instanceof PaymentSheetResult.Completed){
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            savePurchase();
         }
     }
 
@@ -163,7 +184,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
                             Toast.makeText(TableInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
 
-                           getClientSecret(CustomerId,ephericalKey);
+                        //   getClientSecret(CustomerId,ephericalKey);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -203,7 +224,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    private void getClientSecret(String customerId, String ephericalKey) {
+    private void getClientSecret(String customerId, String ephericalKey, int priceCents) {
 
         StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents",
                 new Response.Listener<String>() {
@@ -216,6 +237,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
                             clientSecret=object.getString("client_secret");
                             Toast.makeText(TableInfo.this, clientSecret, Toast.LENGTH_SHORT).show();
 
+                            paymentFlow();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -243,8 +265,8 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
                 Map<String, String> params = new HashMap<>();
                 params.put("customer",CustomerId);
-                params.put("amount","100"+"00");
-                params.put("currency","USD");
+                params.put("amount", String.valueOf(priceCents));
+                params.put("currency","EUR");
                 params.put("automatic_payment_methods[enabled]","true");
 
                 return params;
@@ -287,6 +309,9 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
                         } else if (label.equalsIgnoreCase("Depth (cm)")) {
                             tDepth = value;
                         }
+                        else if (label.equalsIgnoreCase("Height (cm)")) {
+                            tHeight = value;
+                        }
                     }
                 }
                 Elements prices = doc.select("p.price span.woocommerce-Price-amount");
@@ -308,6 +333,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
             tableWidth.setText(tWidth);
             tableDepth.setText(tDepth);
             tablePrice.setText(tPrice);
+            tableHeight.setText(tHeight);
 
         }
     }
@@ -321,14 +347,25 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.purchase:
                 if (customerInitialized) {
-                    paymentFlow();
+                    String priceString = tablePrice.getText().toString();
+                    priceString = priceString.replace("€", "").trim();
+                    int priceInCents = (int) (Double.parseDouble(priceString) * 100);
+                    getClientSecret(CustomerId, ephericalKey, priceInCents);
+
+
                 } else {
                     Toast.makeText(TableInfo.this, "id not set", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
+    private void savePurchase() {
 
+            ParseItem parseItem = new ParseItem(tTitle, tImg,tWidth,tDepth,tTableUrl,tHeight,tPrice);
+            String uploadId = databaseReference.push().getKey();
+            databaseReference.child(uploadId).setValue(parseItem);
+
+    }
 
 
     public void viewDeskRoom(){

@@ -63,7 +63,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.findBeds:
                 Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, BedListing.class));
+                searching(getApplicationContext());
                 break;
 
             case R.id.bResetBtn:
@@ -92,11 +92,11 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
             //System.out.println(userInput);
             hUserInput--;
             sbh.append("," + hUserInput);
-            System.out.println(sbh.toString());
+//            System.out.println(sbh.toString());
             height = sbh.toString();
         }
         int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
-        ;
+
         String depth = String.valueOf(dUserInput);
         StringBuilder sbl = new StringBuilder();
         sbl.append(depth);
@@ -106,23 +106,24 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
             //System.out.println(userInput);
             dUserInput--;
             sbl.append("," + dUserInput);
-            System.out.println(sbl.toString());
+//            System.out.println(sbl.toString());
             depth = sbl.toString();
         }
         int wUserInput = Integer.parseInt(textWidth.getText().toString().trim());
         ;
         String width = String.valueOf(wUserInput);
         StringBuilder sbw = new StringBuilder();
-        sbl.append(width);
+        sbw.append(width);
 
-        while (wUserInput > 84) {
+        while (wUserInput > 60) {
 
             //System.out.println(userInput);
             wUserInput--;
             sbw.append("," + wUserInput);
-            System.out.println(sbw.toString());
+            //System.out.println(sbw.toString());
             width = sbw.toString();
         }
+        //System.out.println("https://flanagans.ie/collections/furniture/bedroom/beds/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height+"&instock_products=in");
 
         // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);
 

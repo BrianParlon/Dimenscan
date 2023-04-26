@@ -24,11 +24,12 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
     Button submit, reset, test;
     EditText length, height, width;
 
+
     private FirebaseUser mUser;
     private String userId;
     private FirebaseAuth mAuth;
     private String onlineUserId;
-    private DatabaseReference reference;
+    private DatabaseReference reference,reference2;
     private Context context;
 
 
@@ -42,6 +43,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         reference  = FirebaseDatabase.getInstance().getReference().child("table_dimensions").child(onlineUserId);
+        reference2 = FirebaseDatabase.getInstance().getReference().child("purchases").child(onlineUserId);
         userId = mUser.getUid();
 
         this.context = this;
@@ -66,7 +68,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.filterTable:
                 Toast.makeText(TableEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, TableListing.class));
+                searching(getApplicationContext());
                 break;
 
             case R.id.tResetBtn:
@@ -99,7 +101,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             height = sbh.toString();
         }
         int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
-        ;
+
         String depth = String.valueOf(dUserInput);
         StringBuilder sbl = new StringBuilder();
         sbl.append(depth);
@@ -116,9 +118,9 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         ;
         String width = String.valueOf(wUserInput);
         StringBuilder sbw = new StringBuilder();
-        sbl.append(width);
+        sbw.append(width);
 
-        while (wUserInput > 84) {
+        while (wUserInput > 60) {
 
             //System.out.println(userInput);
             wUserInput--;
@@ -126,7 +128,6 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             System.out.println(sbw.toString());
             width = sbw.toString();
         }
-
         // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);
 
         Intent tableEntry  = new Intent(context, TableListing.class);

@@ -214,7 +214,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-        StorageReference plotImg= storageReference.child("table/table"+System.currentTimeMillis()+".png");
+        StorageReference plotImg= storageReference.child("tables/table"+System.currentTimeMillis()+".png");
 
         UploadTask uploadPlot = plotImg.putBytes(data);
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

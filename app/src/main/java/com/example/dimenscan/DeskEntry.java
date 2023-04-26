@@ -103,7 +103,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             height = sbh.toString();
         }
         int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
-        ;
+
         String depth = String.valueOf(dUserInput);
         StringBuilder sbl = new StringBuilder();
         sbl.append(depth);
@@ -120,9 +120,9 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
         ;
         String width = String.valueOf(wUserInput);
         StringBuilder sbw = new StringBuilder();
-        sbl.append(width);
+        sbw.append(width);
 
-        while (wUserInput > 84) {
+        while (wUserInput > 60) {
 
             //System.out.println(userInput);
             wUserInput--;

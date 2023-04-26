@@ -194,7 +194,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-        StorageReference plotImg= storageReference.child("plots/plot"+System.currentTimeMillis()+".png");
+        StorageReference plotImg= storageReference.child("Beds/bed"+System.currentTimeMillis()+".png");
 
         UploadTask uploadPlot = plotImg.putBytes(data);
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

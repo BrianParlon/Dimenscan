@@ -154,7 +154,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
 
                             Toast.makeText(BedInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
 
-                            getClientSecret(CustomerId,ephericalKey);
+                        //   getClientSecret(CustomerId,ephericalKey,priceCents);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -194,7 +194,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    private void getClientSecret(String customerId, String ephericalKey) {
+    private void getClientSecret(String customerId, String ephericalKey,int amount) {
 
         StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents",
                 new Response.Listener<String>() {
@@ -207,6 +207,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
                             clientSecret=object.getString("client_secret");
                             Toast.makeText(BedInfo.this, clientSecret, Toast.LENGTH_SHORT).show();
 
+                            paymentFlow();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -234,8 +235,8 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
 
                 Map<String, String> params = new HashMap<>();
                 params.put("customer",CustomerId);
-                params.put("amount","100"+"00");
-                params.put("currency","USD");
+                params.put("amount",String.valueOf(amount));
+                params.put("currency","EUR");
                 params.put("automatic_payment_methods[enabled]","true");
 
                 return params;
@@ -310,8 +311,11 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
                 viewDeskRoom();
                 break;
             case R.id.purchase:
-                if (customerInitialized) {
-                    paymentFlow();
+                if (customerInitialized) { String priceString = bedPrice.getText().toString();
+                    priceString = priceString.replace("€", "").trim();
+                    int priceCents = (int) (Double.parseDouble(priceString) * 100);
+                    getClientSecret(CustomerId, ephericalKey, priceCents);
+
                 } else {
                     Toast.makeText(BedInfo.this, "id not set", Toast.LENGTH_SHORT).show();
                 }

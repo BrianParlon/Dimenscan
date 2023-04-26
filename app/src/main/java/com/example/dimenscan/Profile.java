@@ -84,7 +84,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, ObjectChoice.class));
                 break;
             case R.id.savedDimension:
-                startActivity(new Intent(this, RecycleView.class));
+                startActivity(new Intent(this, purchasesProductView.class));
                 break;
 
                 case R.id.displayRoom:

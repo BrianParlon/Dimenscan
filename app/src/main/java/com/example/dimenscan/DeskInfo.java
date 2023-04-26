@@ -161,7 +161,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
                             Toast.makeText(DeskInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
 
-                            getClientSecret(CustomerId,ephericalKey);
+                          //  getClientSecret(CustomerId,ephericalKey);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -201,7 +201,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void getClientSecret(String customerId, String ephericalKey) {
+    private void getClientSecret(String customerId, String ephericalKey, int priceInCents) {
 
         StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents",
                 new Response.Listener<String>() {
@@ -213,7 +213,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
                             clientSecret=object.getString("client_secret");
                             Toast.makeText(DeskInfo.this, clientSecret, Toast.LENGTH_SHORT).show();
-
+                            paymentFlow();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -241,7 +241,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
                 Map<String, String> params = new HashMap<>();
                 params.put("customer",CustomerId);
-                params.put("amount", "100"+"00");
+                params.put("amount", String.valueOf(priceInCents));
                 params.put("currency","Eur");
                 params.put("automatic_payment_methods[enabled]","true");
 
@@ -318,7 +318,11 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.purchase:
                 if (customerInitialized) {
-                    paymentFlow();
+                    String priceString = deskPrice.getText().toString();
+                    priceString = priceString.replace("€", "").trim();
+                    int priceCents = (int) (Double.parseDouble(priceString) * 100);
+                    getClientSecret(CustomerId, ephericalKey, priceCents);
+
                 } else {
                     Toast.makeText(DeskInfo.this, "id not set", Toast.LENGTH_SHORT).show();
                 }

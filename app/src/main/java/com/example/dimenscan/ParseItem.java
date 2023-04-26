@@ -1,4 +1,7 @@
 package com.example.dimenscan;
+
+import android.widget.TextView;
+
 public class ParseItem {
 
     private String imgUrl;
@@ -6,7 +9,8 @@ public class ParseItem {
     private String depth;
     private String width;
     private String deskUrl;
-
+    private String price;
+    private String height;
 
 
     public ParseItem() {
@@ -21,6 +25,16 @@ public class ParseItem {
 
 
 
+    }
+
+    public ParseItem(String title, String imgUrl, String width, String depth, String deskUrl, String height,String price) {
+        this.imgUrl = imgUrl;
+        this.title = title;
+        this.depth = depth;
+        this.width = width;
+        this.deskUrl = deskUrl;
+        this.height = height;
+        this.price = price;
     }
 
 
@@ -63,6 +77,21 @@ public String getDepth() {
 
     public void setDeskUrl(String deskUrl) {
         this.deskUrl= deskUrl;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price= price;
+    }
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height= height;
     }
 
 
