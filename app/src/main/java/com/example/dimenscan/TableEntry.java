@@ -46,12 +46,8 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
 
         this.context = this;
 
-        test = (Button) findViewById(R.id.testTable);
+        test = (Button) findViewById(R.id.filterTable);
         test.setOnClickListener(this);
-
-
-        submit = (Button) findViewById(R.id.tSubmitBtn);
-        submit.setOnClickListener(this);
 
         reset = (Button) findViewById(R.id.tResetBtn);
         reset.setOnClickListener(this);
@@ -68,7 +64,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.testTable:
+            case R.id.filterTable:
                 Toast.makeText(TableEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, TableListing.class));
                 break;
@@ -76,12 +72,6 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             case R.id.tResetBtn:
                 Toast.makeText(TableEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this,TableEntry.class));
-                break;
-
-
-            case R.id.tSubmitBtn:
-                searching(getApplicationContext());
-
                 break;
 
         }
@@ -134,7 +124,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             wUserInput--;
             sbw.append("," + wUserInput);
             System.out.println(sbw.toString());
-            width = sbl.toString();
+            width = sbw.toString();
         }
 
         // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);

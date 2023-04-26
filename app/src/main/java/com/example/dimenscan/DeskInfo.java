@@ -1,5 +1,6 @@
 package com.example.dimenscan;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.AsyncTaskLoader;
 
@@ -15,8 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.paymentsheet.PaymentSheet;
+import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,14 +37,26 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.InvalidMarkException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DeskInfo extends AppCompatActivity implements View.OnClickListener {
 
     private TextView deskName,deskWidth,deskDepth,deskPrice;
     private ImageView deskImage;
     private String dTitle, dImg,dWidth,dDepth,dDeskUrl,dPrice;
-    private Button viewRoom;
+    private Button viewRoom,pay;
     private Context context;
+
+    //Stripe information
+    String publishableKey ="pk_test_51N0hvLJqlrisGEA5png81SsyJN99wqv7IPdheyT61mB3lBj13qu1sULw1LMvfQmEQpwj7NP9z6sIKCwn1xSvbhDI003cDM9gqG";
+    String secretKey ="sk_test_51N0hvLJqlrisGEA5fzDMiw7mCDSbOT6a3mBp4Qh4HvsM1Fq6345fCiwX60sCUmBxT4PUPrgyKJouC1FKh7EdhinH00Rh7IduXi";
+    String CustomerId;
+    String ephericalKey;
+    String clientSecret;
+    String price;
+    PaymentSheet paymentSheet;
+    private boolean customerInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +69,57 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
         deskDepth =findViewById(R.id.deskDepth);
         deskWidth =findViewById(R.id.deskWidth);
         deskPrice = findViewById(R.id.priceText);
+
+        pay = findViewById(R.id.purchase);
+        pay.setOnClickListener(this);
+
+
+
+        PaymentConfiguration.init(this, publishableKey);
+
+        paymentSheet = new PaymentSheet(this,paymentSheetResult -> {
+            onPaymentResult(paymentSheetResult);
+        });
+
+
+        StringRequest request = new StringRequest(Request.Method.POST,
+                "https://api.stripe.com/v1/customers",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            CustomerId = object.getString("id");
+
+                            Toast.makeText(DeskInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
+
+                            getEmphericalKey();
+                            customerInitialized = true;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(DeskInfo.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String >header = new HashMap<>();
+                header.put("Authorization","Bearer "+secretKey);
+                return header;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
 
 
         Intent deskIntent = getIntent();
@@ -64,6 +140,128 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
         DeskInfo.Content content = new DeskInfo.Content();
         content.execute();
+    }
+
+    private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
+
+        if(paymentSheetResult instanceof PaymentSheetResult.Completed){
+            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getEmphericalKey() {
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/ephemeral_keys",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            ephericalKey = object.getString("id");
+
+                            Toast.makeText(DeskInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
+
+                            getClientSecret(CustomerId,ephericalKey);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(DeskInfo.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String >header = new HashMap<>();
+                header.put("Authorization","Bearer "+secretKey);
+                header.put("Stripe-Version","2022-11-15");
+                return header;
+            }
+
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("customer",CustomerId);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
+
+
+    }
+
+    private void getClientSecret(String customerId, String ephericalKey) {
+
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+
+                            clientSecret=object.getString("client_secret");
+                            Toast.makeText(DeskInfo.this, clientSecret, Toast.LENGTH_SHORT).show();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(DeskInfo.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String >header = new HashMap<>();
+                header.put("Authorization","Bearer "+secretKey);
+
+                return header;
+            }
+
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("customer",CustomerId);
+                params.put("amount", "100"+"00");
+                params.put("currency","Eur");
+                params.put("automatic_payment_methods[enabled]","true");
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
+
+
+    }
+    private void paymentFlow() {
+
+        paymentSheet.presentWithPaymentIntent(clientSecret,new PaymentSheet.Configuration("DimenScan",new PaymentSheet.CustomerConfiguration(
+                CustomerId,
+                ephericalKey
+        )));
+
     }
     private class Content extends AsyncTask<Void,Void,Void> {
 
@@ -117,6 +315,13 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
             case R.id.roomView:
                 Toast.makeText(DeskInfo.this, "Viewing desk in room", Toast.LENGTH_LONG).show();
                 viewDeskRoom();
+                break;
+            case R.id.purchase:
+                if (customerInitialized) {
+                    paymentFlow();
+                } else {
+                    Toast.makeText(DeskInfo.this, "id not set", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

@@ -32,11 +32,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         // Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
 
-
-        Button login = findViewById(R.id.button2);
-        login.setOnClickListener(this);
-
-        Button signUp = findViewById(R.id.button);
+        Button signUp = findViewById(R.id.signUp);
         signUp.setOnClickListener(this);
 
     }
@@ -44,11 +40,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.button2:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.button:
+
+            case R.id.signUp:
                 registerUser();
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }

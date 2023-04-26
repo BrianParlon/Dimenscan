@@ -49,14 +49,8 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
 
         this.context = this;
 
-        online = (Button)findViewById(R.id.TestingLink);
+        online = (Button)findViewById(R.id.filterDesks);
         online.setOnClickListener(this);
-
-        test = (Button) findViewById(R.id.onlineTest);
-        test.setOnClickListener(this);
-
-        submit = (Button) findViewById(R.id.submitBtn);
-        submit.setOnClickListener(this);
 
         reset = (Button) findViewById(R.id.resetBtn);
         reset.setOnClickListener(this);
@@ -73,13 +67,8 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.onlineTest:
-                Toast.makeText(DeskEntry.this, "Testing Online", Toast.LENGTH_LONG).show();
-            //    searching();
-                startActivity(new Intent(this, DeskListing.class));
-                break;
 
-            case R.id.TestingLink:
+            case R.id.filterDesks:
                 Toast.makeText(DeskEntry.this, "Displaying website", Toast.LENGTH_LONG).show();
                 searching(getApplicationContext());
                 break;
@@ -87,10 +76,6 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             case R.id.resetBtn:
                 Toast.makeText(DeskEntry.this, "Dimensions reset", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, DeskEntry.class));
-                break;
-
-            case R.id.submitBtn:
-                saveDimensions();
                 break;
 
         }
@@ -143,7 +128,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             wUserInput--;
             sbw.append("," + wUserInput);
             System.out.println(sbw.toString());
-            width = sbl.toString();
+            width = sbw.toString();
         }
 
        // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);

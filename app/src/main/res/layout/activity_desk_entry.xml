@@ -7,29 +7,17 @@
     tools:context=".DeskEntry">
 
     <Button
-        android:id="@+id/TestingLink"
+        android:id="@+id/filterDesks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Link Test"
+        android:text="Find desks"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintHorizontal_bias="0.705"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.944" />
-
-    <Button
-        android:id="@+id/onlineTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="online test"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.847" />
+        app:layout_constraintVertical_bias="0.745" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -166,7 +154,7 @@
         android:id="@+id/length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Length"
+        android:text="Depth"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -210,19 +198,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.291"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.745" />
-
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.736"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.745" />

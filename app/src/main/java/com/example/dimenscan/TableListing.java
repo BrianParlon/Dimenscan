@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,12 +73,16 @@ public class TableListing extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             Document doc,doc2;
+            Intent tableEntry = getIntent();
+            String depth = tableEntry.getStringExtra("depth");
+            String width = tableEntry.getStringExtra("width");
+            String height =tableEntry.getStringExtra("height");
             try {
-                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/living-room/coffee-tables/").get();
+                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/dining-room/dining-tables/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height+"&instock_products=in").get();
                 Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
 
-                doc2 = Jsoup.connect("https://flanagans.ie/collections/furniture/living-room/coffee-tables/").get();
-                Elements texts = doc2.select("div.title-wrapper");
+              //  doc2 = Jsoup.connect("https://flanagans.ie/collections/furniture/dining-room/dining-tables/").get();
+                Elements texts = doc.select("div.title-wrapper");
                 int i =0;
                 for (Element image : images) {
                     if (image.attr("src")
@@ -97,8 +102,14 @@ public class TableListing extends AppCompatActivity {
 
                         Document tables = Jsoup.connect(tableUrl).get();
                         Element dimensions = tables.select("div.woocommerce-Tabs-panel--description").first();
-                        String dimensionsText = dimensions.text();
+                        String dimensionsText;
 
+                        if(dimensions!=null) {
+                            dimensionsText = dimensions.text();
+                        }
+                        else   {
+                            dimensionsText ="information not found";
+                        }
                         // Extract Width
                         Pattern wPattern = Pattern.compile("W(\\d+)cm");
                         Matcher wMatcher = wPattern.matcher(dimensionsText);

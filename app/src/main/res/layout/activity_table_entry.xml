@@ -23,16 +23,17 @@
         app:layout_constraintVertical_bias="0.058" />
 
     <Button
-        android:id="@+id/testTable"
+        android:id="@+id/filterTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="online test"
+        android:text="Find tables"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856" />
+        app:layout_constraintVertical_bias="0.745" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -156,7 +157,7 @@
         android:id="@+id/length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Length"
+        android:text="Depth"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -188,20 +189,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.291"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.745" />
-
-    <Button
-        android:id="@+id/tSubmitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.745" />

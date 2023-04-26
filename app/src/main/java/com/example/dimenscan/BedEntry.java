@@ -45,13 +45,8 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         reference = FirebaseDatabase.getInstance().getReference().child("bed_dimensions").child(onlineUserId);
         userId = mUser.getUid();
 
-        test = (Button) findViewById(R.id.testBed);
+        test = (Button) findViewById(R.id.findBeds);
         test.setOnClickListener(this);
-
-
-
-        submit = (Button) findViewById(R.id.bSubmitBtn);
-        submit.setOnClickListener(this);
 
         reset = (Button) findViewById(R.id.bResetBtn);
         reset.setOnClickListener(this);
@@ -66,7 +61,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.testBed:
+            case R.id.findBeds:
                 Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, BedListing.class));
                 break;
@@ -76,10 +71,6 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
                 startActivity(new Intent(this,BedEntry.class));
                 break;
 
-
-            case R.id.bSubmitBtn:
-                searching(getApplicationContext());
-                break;
 
         }
     }
@@ -130,7 +121,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
             wUserInput--;
             sbw.append("," + wUserInput);
             System.out.println(sbw.toString());
-            width = sbl.toString();
+            width = sbw.toString();
         }
 
         // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);

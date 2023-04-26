@@ -82,10 +82,10 @@ public class DeskListing extends AppCompatActivity {
             String height =deskEntry.getStringExtra("height");
 
             try {
-                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height).get();
+                doc = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height+"&instock_products=in").get();
                 Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
 
-                doc2 = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=84&pa_depth-cm=48&pa_height-cm=76").get();
+              //  doc2 = Jsoup.connect("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=84&pa_depth-cm=48&pa_height-cm=76").get();
                 Elements texts = doc.select("div.title-wrapper");
                 int i =0;
                 for (Element image : images) {
@@ -99,15 +99,21 @@ public class DeskListing extends AppCompatActivity {
                         String title = texts.select("div.title-wrapper").select("a").eq(i).text();
 
                         System.out.println("Desk name " + title);
-                        String txt = texts.text();
+//                        String txt = texts.text();
 
                         String deskUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
                         System.out.println(deskUrl);
 
                         Document deskDetails = Jsoup.connect(deskUrl).get();
                         Element dimensions = deskDetails.select("div.woocommerce-Tabs-panel--description").first();
-                        String dimensionsText = dimensions.text();
-
+                        String dimensionsText;
+                        if(dimensions!=null) {
+                            dimensionsText = dimensions.text();
+                        }
+                        else   {
+//                            dimensionsText ="information not found";
+                            break;
+                        }
                         // Extract Width
                         Pattern wPattern = Pattern.compile("W(\\d+)cm");
                         Matcher wMatcher = wPattern.matcher(dimensionsText);
