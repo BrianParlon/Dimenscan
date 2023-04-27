@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeskInfo extends AppCompatActivity implements View.OnClickListener {
+public class ViewBedImage extends AppCompatActivity implements View.OnClickListener {
 
     private TextView deskName,deskWidth,deskDepth,deskPrice,deskHeight;
     private ImageView deskImage;
@@ -114,7 +114,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
                             CustomerId = object.getString("id");
 
-                            Toast.makeText(DeskInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ViewBedImage.this, CustomerId, Toast.LENGTH_SHORT).show();
 
                             getEmphericalKey();
                             customerInitialized = true;
@@ -127,7 +127,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(DeskInfo.this, "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewBedImage.this, "error", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -160,7 +160,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 //        deskDepth.setText(dDepth);
         context = this;
 
-        DeskInfo.Content content = new DeskInfo.Content();
+        ViewBedImage.Content content = new ViewBedImage.Content();
         content.execute();
     }
 
@@ -189,9 +189,9 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
                             ephericalKey = object.getString("id");
 
-                            Toast.makeText(DeskInfo.this, CustomerId, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ViewBedImage.this, CustomerId, Toast.LENGTH_SHORT).show();
 
-                          //  getClientSecret(CustomerId,ephericalKey);
+                            //  getClientSecret(CustomerId,ephericalKey);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -201,7 +201,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(DeskInfo.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewBedImage.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -242,7 +242,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
 
                             clientSecret=object.getString("client_secret");
-                            Toast.makeText(DeskInfo.this, clientSecret, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ViewBedImage.this, clientSecret, Toast.LENGTH_SHORT).show();
                             paymentFlow();
 
                         } catch (JSONException e) {
@@ -253,7 +253,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(DeskInfo.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewBedImage.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -348,7 +348,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.roomView:
-                Toast.makeText(DeskInfo.this, "Viewing desk in room", Toast.LENGTH_LONG).show();
+                Toast.makeText(ViewBedImage.this, "Viewing desk in room", Toast.LENGTH_LONG).show();
                 viewDeskRoom();
                 break;
             case R.id.purchase:
@@ -359,7 +359,7 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
                     getClientSecret(CustomerId, ephericalKey, priceCents);
 
                 } else {
-                    Toast.makeText(DeskInfo.this, "id not set", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewBedImage.this, "id not set", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

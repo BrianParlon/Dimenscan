@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AsyncPlayer;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
@@ -37,14 +43,16 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.InvalidMarkException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BedInfo extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView bedName,bedWidth,bedDepth,bedPrice;
+    private TextView bedName,bedWidth,bedDepth,bedPrice,bedHeight;
     private ImageView tableImg;
-    private String bTitle, bImg,bWidth,bDepth,bTableUrl,bPrice;
+    private String bTitle, bImg,bWidth,bDepth,bBedUrl,bPrice,bHeight;
     private Button viewRoom,pay;
     private Context context;
     //stripe information
@@ -55,11 +63,24 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
     String clientSecret;
     PaymentSheet paymentSheet;
     private boolean customerInitialized = false;
+    private Uri imageUri;
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
+    private FirebaseUser user;
+    private String userId;
+    private FirebaseAuth mAuth;
+    private String onlineUserId;
+    private List<ParseItem> parseItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bed_info);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
+        parseItems = new ArrayList<>();
+        databaseReference= FirebaseDatabase.getInstance().getReference("purchases").child(userId);
+
 
         bedName =findViewById(R.id.bedTitle);
         tableImg=findViewById(R.id.bedPicture);
@@ -67,6 +88,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
         bedDepth =findViewById(R.id.bedDepth);
         bedWidth =findViewById(R.id.bedWidth);
         bedPrice = findViewById(R.id.priceText);
+        bedHeight = findViewById(R.id.bedHght);
         pay = findViewById(R.id.purchase);
         pay.setOnClickListener(this);
 
@@ -121,7 +143,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
         bImg= bedIntent.getStringExtra("imageUrl");
         bWidth=bedIntent.getStringExtra("width");
         bDepth=bedIntent.getStringExtra("depth");
-        bTableUrl=bedIntent.getStringExtra("bedUrl");
+        bBedUrl=bedIntent.getStringExtra("bedUrl");
 
         viewRoom = (Button)findViewById(R.id.roomView);
         viewRoom.setOnClickListener(this);
@@ -139,6 +161,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
 
         if(paymentSheetResult instanceof PaymentSheetResult.Completed){
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            savePurchase();
         }
     }
 
@@ -262,7 +285,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Document doc = Jsoup.connect(bTableUrl).get();
+                Document doc = Jsoup.connect(bBedUrl).get();
                 Elements dimensions = doc.select("table.woocommerce-product-attributes");
 
                 for (Element attribute : dimensions) {
@@ -277,6 +300,9 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
                             bWidth = value;
                         } else if (label.equalsIgnoreCase("Depth (cm)")) {
                             bDepth = value;
+                        }
+                        else if (label.equalsIgnoreCase("Height (cm)")) {
+                            bHeight = value;
                         }
                     }
                 }
@@ -299,16 +325,25 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
             bedWidth.setText(bWidth);
             bedDepth.setText(bDepth);
             bedPrice.setText(bPrice);
+            bedHeight.setText(bHeight);
 
         }
     }
+    private void savePurchase() {
+
+        ParseItem parseItem = new ParseItem(bTitle, bImg,bWidth,bDepth,bBedUrl,bHeight,bPrice);
+        String uploadId = databaseReference.push().getKey();
+        databaseReference.child(uploadId).setValue(parseItem);
+
+    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.roomView:
                 Toast.makeText(BedInfo.this, "Viewing table in room", Toast.LENGTH_LONG).show();
-                viewDeskRoom();
+                viewBedRoom();
                 break;
             case R.id.purchase:
                 if (customerInitialized) { String priceString = bedPrice.getText().toString();
@@ -323,10 +358,12 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    public void viewDeskRoom(){
-        Intent tableRoom = new Intent(context, ViewTable.class);
-        tableRoom.putExtra("depth",bedDepth.getText());
-        tableRoom.putExtra("width",bedWidth.getText());
-        context.startActivity(tableRoom);
+    public void viewBedRoom(){
+        Intent bedIntent = new Intent(context, ViewBed.class);
+        bedIntent.putExtra("depth",bedDepth.getText());
+        bedIntent.putExtra("width",bedWidth.getText());
+        bedIntent.putExtra("price",bedPrice.getText());
+        bedIntent.putExtra("title",bedName.getText());
+        context.startActivity(bedIntent);
     }
 }

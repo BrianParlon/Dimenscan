@@ -11,30 +11,42 @@ public class ParseItem {
     private String deskUrl;
     private String price;
     private String height;
+    private String roomName;
+
 
 
     public ParseItem() {
     }
 
-    public ParseItem(String imgUrl, String title,String width, String depth,String deskUrl) {
+    public ParseItem(String imgUrl, String roomName,String width, String depth,String price,String title ) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.depth = depth;
         this.width = width;
         this.deskUrl = deskUrl;
-
+        this.roomName = roomName;
+        this.price = price;
 
 
     }
 
-    public ParseItem(String title, String imgUrl, String width, String depth, String deskUrl, String height,String price) {
+    public ParseItem(String imgUrl, String roomName,String width, String depth,String deskUrl,String price,String title) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.depth = depth;
         this.width = width;
         this.deskUrl = deskUrl;
-        this.height = height;
+        this.roomName = roomName;
         this.price = price;
+    }
+
+    public ParseItem(String imgUrl, String title, String width, String depth, String deskUrl) {
+        this.imgUrl = imgUrl;
+        this.title = title;
+        this.depth = depth;
+        this.width = width;
+        this.deskUrl = deskUrl;
+
     }
 
 

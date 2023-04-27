@@ -55,6 +55,11 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double roomWidth = 5;
     private double roomHeight = 5;
 
+//    private double roomWidth ;
+//    private double roomHeight;
+
+
+
     private double deskWidth;
     private double deskHeight;
 
@@ -177,10 +182,12 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "Item has been rotated", Toast.LENGTH_SHORT).show();
                 rotation();
                 break;
+
             case R.id.CreateItem:
                 Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
+
             case R.id.remove:
                 Toast.makeText(this, "Remove", Toast.LENGTH_SHORT).show();
                 removeTouch();

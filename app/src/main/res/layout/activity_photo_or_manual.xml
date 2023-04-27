@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ObjectChoice">
+    tools:context=".ObjectChoice"
+    android:background="@drawable/backgroundimage">
 
     <ImageView
         android:id="@+id/imageView5"
@@ -82,9 +83,11 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="213dp"
-        android:layout_height="82dp"
+        android:layout_width="266dp"
+        android:layout_height="73dp"
         android:text="Chose which object below you would like to search for"
+        android:textColor="@color/black"
+        android:textSize="19dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

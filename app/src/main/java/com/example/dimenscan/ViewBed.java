@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,9 +27,11 @@ import com.androidplot.xy.XYSeries;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,11 +42,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ViewBed extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseUser mUser;
+    private FirebaseUser user;
     private String userId;
     private FirebaseAuth mAuth;
     private String onlineUserId;
-    private DatabaseReference reference;
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
 
     private XYPlot plot;
     private XYSeries roomSize;
@@ -57,6 +61,9 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 
     private double deskWidth;
     private double deskHeight;
+    private String roomName="bedroom";
+    private String bedUrl="empty";
+    private String deskPrice,deskTitle;
 
     //distance from left wall
     private double deskX = 2.0;
@@ -72,6 +79,8 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_bed);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
 
         rotation = (Button)findViewById(R.id.button10);
         rotation.setOnClickListener(this);
@@ -82,6 +91,9 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
 
+        storageReference= FirebaseStorage.getInstance().getReference("Beds");
+        databaseReference = FirebaseDatabase.getInstance().getReference("images").child(userId);
+
 
 
 
@@ -91,6 +103,8 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         Intent bedIntent = getIntent();
         deskWidth = Double.parseDouble(bedIntent.getStringExtra("width"));
         deskHeight= Double.parseDouble(bedIntent.getStringExtra("depth"));
+        deskPrice = bedIntent.getStringExtra("price");
+        deskTitle = bedIntent.getStringExtra("title");
         deskHeight = deskHeight/100;
         deskWidth = deskWidth/100;
 
@@ -112,7 +126,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 
 
         // add to the plot
-        plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
+        plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null,null , null));
         plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
 
         // set the range of plot to match the room dimensions
@@ -145,7 +159,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
                         double deltaX = (event.getX() - lastTouchX) / plot.getWidth() * roomWidth;
                         double deltaY = -(event.getY() - lastTouchY) / plot.getHeight() * roomHeight;
 
-                        // Check if the new position of the object is within the plot boundaries
+                        //Will check to see if new position item is moved to is within room outline
                         if (desk.x + deltaX >= 0 && desk.x + desk.width + deltaX <= roomWidth &&
                                 desk.y + deltaY >= 0 && desk.y + desk.height + deltaY <= roomHeight) {
                             desk.x += deltaX;
@@ -192,15 +206,28 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         plotBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference();
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference storageReference = storage.getReference();
         StorageReference plotImg= storageReference.child("Beds/bed"+System.currentTimeMillis()+".png");
 
         UploadTask uploadPlot = plotImg.putBytes(data);
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+
+                String width = String.valueOf(deskWidth);
+                String depth = String.valueOf(deskHeight);
+                ParseItem parseItem = new ParseItem(downloadUrl.toString(),roomName,width,depth,bedUrl,deskPrice,deskTitle);
+
+
+                String uploadId = databaseReference.push().getKey();
+                databaseReference.child(uploadId).setValue(parseItem);
                 Toast.makeText(ViewBed.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

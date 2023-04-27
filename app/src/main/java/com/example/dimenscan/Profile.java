@@ -3,10 +3,14 @@ package com.example.dimenscan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +29,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference reference;
     private String userId;
     private Boolean isOpen=false;
-     Button btnPicture,newProd,saved,display;
+     Button img,newProd,saved,display;
      ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
         newProd = (Button) findViewById(R.id.button5);
         newProd.setOnClickListener(this);
+
+        img =(Button)findViewById(R.id.viewImages);
+        img.setOnClickListener(this);
 
 
         display = (Button) findViewById(R.id.displayRoom);
@@ -80,7 +87,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
 
             case R.id.button5:
-
                 startActivity(new Intent(this, ObjectChoice.class));
                 break;
             case R.id.savedDimension:
@@ -88,12 +94,40 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
 
                 case R.id.displayRoom:
-                startActivity(new Intent(this, ViewBed.class));
+               objectDialog();
+                break;
+
+            case R.id.viewImages:
+                startActivity(new Intent(this, ImagesActivity.class));
                 break;
 
 
 
         }
+    }
+    public void objectDialog() {
+        // Inflate the dialog layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.room_object, null);
+        // Find the EditTexts in the dialog layout
+        EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
+        EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
+
+        AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
+        objDialog.setTitle("Add Room dimensions");
+        objDialog.setView(dialogView);
+        objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Parse the width and height entered by the user
+                double width = Double.parseDouble(widthTxt.getText().toString());
+                double height = Double.parseDouble(heightTxt.getText().toString());
+
+
+            }
+        });
+        objDialog.setNegativeButton("Cancel", null);
+        objDialog.show();
     }
 
 

@@ -4,15 +4,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.AsyncTaskLoader;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AsyncPlayer;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -343,6 +347,7 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.roomView:
                 Toast.makeText(TableInfo.this, "Viewing table in room", Toast.LENGTH_LONG).show();
+              //  createRoomSize();
                 viewDeskRoom();
                 break;
             case R.id.purchase:
@@ -359,6 +364,35 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
                 break;
         }
     }
+
+    private void createRoomSize() {
+        // Inflate the dialog layout
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.room_object, null);
+        // Find the EditTexts in the dialog layout
+        EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
+        EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
+
+        AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
+        objDialog.setTitle("Add Room dimensions");
+        objDialog.setView(dialogView);
+        objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Parse the width and height entered by the user
+                double width = Double.parseDouble(widthTxt.getText().toString());
+                double height = Double.parseDouble(heightTxt.getText().toString());
+
+
+
+
+            }
+        });
+        objDialog.setNegativeButton("Cancel", null);
+        objDialog.show();
+    }
+
+
     private void savePurchase() {
 
             ParseItem parseItem = new ParseItem(tTitle, tImg,tWidth,tDepth,tTableUrl,tHeight,tPrice);
