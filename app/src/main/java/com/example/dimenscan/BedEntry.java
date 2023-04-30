@@ -62,23 +62,53 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.findBeds:
-                Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 searching(getApplicationContext());
+                Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.bResetBtn:
+                resetDimensions();
                 Toast.makeText(BedEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this,BedEntry.class));
                 break;
 
 
         }
+    }
+    private void resetDimensions() {
+        TextView textDepth = findViewById(R.id.editTextTextPersonName7);
+        TextView textHeight = findViewById(R.id.editTextTextPersonName11);
+        TextView textWidth = findViewById(R.id.editTextTextPersonName12);
+
+        textDepth.setText("");
+        textHeight.setText("");
+        textWidth.setText("");
     }
     private void searching(Context context) {
 
         TextView textDepth = findViewById(R.id.bLength);
         TextView textHeight = findViewById(R.id.bHeight);
         TextView textWidth = findViewById(R.id.bWidth);
+
+        String depthVal = textDepth.getText().toString().trim();
+        String heightVal = textHeight.getText().toString().trim();
+        String widthVal = textWidth.getText().toString().trim();
+
+        if(depthVal.isEmpty()){
+            textDepth.setError("Depth must be set!");
+            textDepth.requestFocus();
+            return;
+        }
+        if(heightVal.isEmpty()){
+            textHeight.setError("Height must be set!");
+            textDepth.requestFocus();
+        return;
+        }
+
+        if(widthVal.isEmpty()){
+            textWidth.setError("Width must be set!");
+            textWidth.requestFocus();
+        return;
+        }
 
 
         int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());

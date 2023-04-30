@@ -69,16 +69,26 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
 
             case R.id.filterDesks:
-                Toast.makeText(DeskEntry.this, "Displaying website", Toast.LENGTH_LONG).show();
                 searching(getApplicationContext());
+                Toast.makeText(DeskEntry.this, "Displaying website", Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.resetBtn:
+                resetDimensions();
                 Toast.makeText(DeskEntry.this, "Dimensions reset", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, DeskEntry.class));
                 break;
 
         }
+    }
+
+    private void resetDimensions() {
+        TextView textDepth = findViewById(R.id.editTextTextPersonName7);
+        TextView textHeight = findViewById(R.id.editTextTextPersonName11);
+        TextView textWidth = findViewById(R.id.editTextTextPersonName12);
+
+        textDepth.setText("");
+        textHeight.setText("");
+        textWidth.setText("");
     }
 
     private void searching(Context context) {
@@ -86,6 +96,28 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
         TextView textDepth = findViewById(R.id.editTextTextPersonName7);
         TextView textHeight = findViewById(R.id.editTextTextPersonName11);
         TextView textWidth = findViewById(R.id.editTextTextPersonName12);
+
+        String depthVal = textDepth.getText().toString().trim();
+        String heightVal = textHeight.getText().toString().trim();
+        String widthVal = textWidth.getText().toString().trim();
+
+        if(depthVal.isEmpty()){
+            textDepth.setError("Depth must be set!");
+            textDepth.requestFocus();
+            return;
+        }
+        if(heightVal.isEmpty()){
+            textHeight.setError("Height must be set!");
+            textDepth.requestFocus();
+            return;
+        }
+
+        if(widthVal.isEmpty()){
+            textWidth.setError("Width must be set!");
+            textWidth.requestFocus();
+            return;
+        }
+
 
 
         int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());
