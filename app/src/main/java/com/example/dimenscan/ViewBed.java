@@ -70,10 +70,12 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
     //distance from bottom wall
     private double deskY = 2.5;
 
+    private RoomObject lastTouch = null;
+
     private double lastTouchX;
     private double lastTouchY;
 
-    Button rotation,create,save;
+    Button rotation,create,save,removeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,9 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 
         save = (Button)findViewById(R.id.saveItem);
         save.setOnClickListener(this);
+
+        removeBtn = findViewById(R.id.remove);
+        removeBtn.setOnClickListener(this);
 
         storageReference= FirebaseStorage.getInstance().getReference("Beds");
         databaseReference = FirebaseDatabase.getInstance().getReference("images").child(userId);
@@ -121,6 +126,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 //                "Desk");
 
         desk = new RoomObject(deskWidth, deskHeight, "Desk", deskX, deskY);
+
         desk.updateObjectSize();
         roomObject.add(desk);
 
@@ -132,6 +138,8 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         // set the range of plot to match the room dimensions
         plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
         plot.setDomainBoundaries(0, roomWidth, BoundaryMode.FIXED);
+
+
 
         plot.setDrawingCacheEnabled(true);
         // touch to move the desk
@@ -149,6 +157,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
                         for (RoomObject obj : roomObject) {
                             if (touchX >= obj.x && touchX <= obj.x + obj.width &&
                                     touchY >= obj.y && touchY <= obj.y + obj.height) {
+                                lastTouch =obj;
                                 desk = obj;
                                 break;
                             }
@@ -188,11 +197,24 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(ViewBed.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
+            case R.id.remove:
+                Toast.makeText(this, "Remove", Toast.LENGTH_SHORT).show();
+                removeTouch();
+                break;
             case R.id.saveItem:
                 uploadToStorage();
                 break;
         }
     }
+
+    private void removeTouch() {
+        if (lastTouch != null) {
+            roomObject.remove(lastTouch);
+            lastTouch = null;
+            updatePlot();
+        }
+    }
+
     private Bitmap getPlotBitmap() {
         plot.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(plot.getDrawingCache());

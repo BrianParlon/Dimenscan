@@ -43,7 +43,7 @@ public class PurchasesAdapter extends RecyclerView.Adapter<PurchasesAdapter.Imag
 //        holder.textViewName.setText(uploadCurrent.getTitle());
 //        holder.textViewName.setTextColor(Color.RED);
         Picasso.get().load(uploadCurrent.getImgUrl()).into(holder.imageView);
-        holder.textViewName.setText(uploadCurrent.getTitle());
+        holder.textViewName.setText(uploadCurrent.getTitle()+" " +uploadCurrent.getPrice());
 
     }
 

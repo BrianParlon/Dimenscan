@@ -131,7 +131,7 @@ public class TableListing extends AppCompatActivity {
                         //adds items so that they can be viewed in the recyclerview
                         //need to change the items added to adapter below to bring over width, height ,url and price
                         parseItems.add(new ParseItem(imgUrl, title,tableWidth,tableDepth,tableUrl));
-                        Log.d("items", "img: " + imgUrl + " . title: " + title);
+//                        Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }
                 }

@@ -192,6 +192,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "Remove", Toast.LENGTH_SHORT).show();
                 removeTouch();
                 break;
+
                 case R.id.saveItem:
                     uploadToStorage();
                 break;

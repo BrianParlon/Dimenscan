@@ -91,18 +91,18 @@ public class DeskListing extends AppCompatActivity {
                 for (Element image : images) {
                     if (image.attr("src")
                             .equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
-                        System.out.println("none");
+//                        System.out.println("none");
                     } else {
-                        System.out.println("Image Source: " + image.attr("src"));
+//                        System.out.println("Image Source: " + image.attr("src"));
                         String imgUrl = image.attr("src");
 
                         String title = texts.select("div.title-wrapper").select("a").eq(i).text();
 
-                        System.out.println("Desk name " + title);
+//                        System.out.println("Desk name " + title);
 //                        String txt = texts.text();
 
                         String deskUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
-                        System.out.println(deskUrl);
+//                        System.out.println(deskUrl);
 
                         Document deskDetails = Jsoup.connect(deskUrl).get();
                         Element dimensions = deskDetails.select("div.woocommerce-Tabs-panel--description").first();
@@ -121,7 +121,7 @@ public class DeskListing extends AppCompatActivity {
                         if (wMatcher.find()) {
                             deskWidth = wMatcher.group(1);
                         }
-                        System.out.println("Width: " + deskWidth);
+//                        System.out.println("Width: " + deskWidth);
 
                         // Extract Depth
                         Pattern dPattern = Pattern.compile("D(\\d+)cm");
@@ -130,12 +130,12 @@ public class DeskListing extends AppCompatActivity {
                         if (dMatcher.find()) {
                             deskDepth = dMatcher.group(1);
                         }
-                        System.out.println("Depth: " + deskDepth);
+//                        System.out.println("Depth: " + deskDepth);
 
 
                         //adds items so that they can be viewed in the recyclerview
                         parseItems.add(new ParseItem(imgUrl, title, deskDepth,deskWidth,deskUrl));
-                        Log.d("items", "img: " + imgUrl + " . title: " + title+ "DeskUrl"+deskUrl);
+//                        Log.d("items", "img: " + imgUrl + " . title: " + title+ "DeskUrl"+deskUrl);
                         i++;
                     }
                 }

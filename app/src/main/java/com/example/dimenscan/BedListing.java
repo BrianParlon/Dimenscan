@@ -84,18 +84,18 @@ public class BedListing extends AppCompatActivity {
                 for (Element image : images) {
                     if (image.attr("src")
                             .equalsIgnoreCase("https://flanagans.ie/wp-content/uploads/2022/03/Final-Logo.png")) {
-                        System.out.println("none");
+//                        System.out.println("none");
                     } else {
-                        System.out.println("Image Source: " + image.attr("src"));
+//                        System.out.println("Image Source: " + image.attr("src"));
                         String imgUrl = image.attr("src");
 
                         String title = texts.select("div.title-wrapper").select("a").eq(i).text();
 
-                        System.out.println("Bed name " + title);
+//                        System.out.println("Bed name " + title);
                        // String txt = texts.text();
 
                         String bedUrl = texts.select("div.title-wrapper").select("a").eq(i).attr("href");
-                        System.out.println(bedUrl);
+//                        System.out.println(bedUrl);
 
                         Document beds = Jsoup.connect(bedUrl).get();
                         Element dimensions = beds.select("div.woocommerce-Tabs-panel--description").first();
@@ -115,7 +115,7 @@ public class BedListing extends AppCompatActivity {
                         if (wMatcher.find()) {
                             bedWidth = wMatcher.group(1);
                         }
-                        System.out.println("Width: " + bedWidth);
+//                        System.out.println("Width: " + bedWidth);
 
                         // Extract Depth
                         Pattern dPattern = Pattern.compile("D(\\d+)cm");
@@ -124,12 +124,12 @@ public class BedListing extends AppCompatActivity {
                         if (dMatcher.find()) {
                             bedDepth = dMatcher.group(1);
                         }
-                        System.out.println("Depth: " + bedDepth);
+//                        System.out.println("Depth: " + bedDepth);
 
                         //adds items so that they can be viewed in the recyclerview
                         //need to change the items added to adapter below to bring over width, height ,url and price
                         parseItems.add(new ParseItem(imgUrl, title,bedWidth,bedDepth,bedUrl));
-                        Log.d("items", "img: " + imgUrl + " . title: " + title);
+//                        Log.d("items", "img: " + imgUrl + " . title: " + title);
                         i++;
                     }
                 }

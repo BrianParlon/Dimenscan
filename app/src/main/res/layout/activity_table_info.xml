@@ -10,7 +10,6 @@
         android:id="@+id/tableWidth"
         android:layout_width="86dp"
         android:layout_height="35dp"
-        android:text="TextView"
         android:textColor="@color/purple_700"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,9 +37,7 @@
         android:id="@+id/tableDepth"
         android:layout_width="76dp"
         android:layout_height="34dp"
-        android:text="TextView"
         android:textColor="@color/purple_700"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.597"
@@ -52,9 +49,7 @@
         android:id="@+id/tableHght"
         android:layout_width="76dp"
         android:layout_height="34dp"
-        android:text="TextView"
         android:textColor="@color/purple_700"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
@@ -67,7 +62,7 @@
         android:layout_width="289dp"
         android:layout_height="74dp"
         android:textSize="20dp"
-        android:text="TextView"
+
         android:textColor="@color/purple_700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,28 +158,16 @@
         app:layout_constraintVertical_bias="0.625" />
 
     <Button
-        android:id="@+id/saveItem"
-        android:layout_width="138dp"
-        android:layout_height="52dp"
-        android:text="Save to my account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.798"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.832" />
-
-    <Button
         android:id="@+id/purchase"
         android:layout_width="138dp"
         android:layout_height="52dp"
         android:text="Purchase"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.938" />
+        app:layout_constraintVertical_bias="0.832" />
 
     <Button
         android:id="@+id/roomView"
