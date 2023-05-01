@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,9 +27,11 @@ import com.androidplot.xy.XYSeries;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,11 +42,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ViewDesk extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseUser mUser;
+    private FirebaseUser user;
     private String userId;
     private FirebaseAuth mAuth;
     private String onlineUserId;
-    private DatabaseReference reference;
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
 
     private XYPlot plot;
     private XYSeries roomSize;
@@ -51,11 +55,14 @@ public class ViewDesk extends AppCompatActivity implements View.OnClickListener 
     private List<RoomObject> roomObject = new ArrayList<>();
 
     //All Measurements are in Meters
-    private double roomWidth = 5;
-    private double roomHeight = 5;
+    private double roomWidth;
+    private double roomHeight;
 
     private double deskWidth;
     private double deskHeight;
+    private String roomName="Office";
+    private String bedUrl="empty";
+    private String deskPrice,deskTitle;
 
     //distance from left wall
     private double deskX = 2.0;
@@ -74,6 +81,8 @@ public class ViewDesk extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_desk);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
 
         rotation = (Button)findViewById(R.id.button10);
         rotation.setOnClickListener(this);
@@ -87,14 +96,22 @@ public class ViewDesk extends AppCompatActivity implements View.OnClickListener 
         removeBtn = findViewById(R.id.remove);
         removeBtn.setOnClickListener(this);
 
+        storageReference= FirebaseStorage.getInstance().getReference("Beds");
+        databaseReference = FirebaseDatabase.getInstance().getReference("images").child(userId);
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
 
 
-        Intent deskIntent = getIntent();
-        deskWidth = Double.parseDouble(deskIntent.getStringExtra("width"));
-        deskHeight= Double.parseDouble(deskIntent.getStringExtra("depth"));
+        Intent roomEntry = getIntent();
+        roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth"));
+        roomHeight = Double.parseDouble(roomEntry.getStringExtra("rDepth"));
+
+        deskWidth = Double.parseDouble(roomEntry.getStringExtra("dWidth"));
+        deskHeight= Double.parseDouble(roomEntry.getStringExtra("dHeight"));
+        deskPrice = roomEntry.getStringExtra("dPrice");
+        deskTitle = roomEntry.getStringExtra("dTitle");
+
         deskHeight = deskHeight/100;
         deskWidth = deskWidth/100;
 
@@ -220,6 +237,16 @@ public class ViewDesk extends AppCompatActivity implements View.OnClickListener 
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+
+                String width = String.valueOf(deskWidth);
+                String depth = String.valueOf(deskHeight);
+                ParseItem parseItem = new ParseItem(downloadUrl.toString(),roomName,width,depth,bedUrl,deskPrice,deskTitle);
+
+                String uploadId = databaseReference.push().getKey();
+                databaseReference.child(uploadId).setValue(parseItem);
                 Toast.makeText(ViewDesk.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {

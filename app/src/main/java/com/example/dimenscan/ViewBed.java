@@ -104,7 +104,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         plot = (XYPlot) findViewById(R.id.myPlot);
 
         Intent roomEntry = getIntent();
-        roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth")); // <--- fixed typo here
+        roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth"));
         roomHeight = Double.parseDouble(roomEntry.getStringExtra("rDepth"));
 
         deskWidth = Double.parseDouble(roomEntry.getStringExtra("bWidth"));
@@ -235,7 +235,6 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
                 String width = String.valueOf(deskWidth);
                 String depth = String.valueOf(deskHeight);
                 ParseItem parseItem = new ParseItem(downloadUrl.toString(),roomName,width,depth,bedUrl,deskPrice,deskTitle);
-
 
                 String uploadId = databaseReference.push().getKey();
                 databaseReference.child(uploadId).setValue(parseItem);

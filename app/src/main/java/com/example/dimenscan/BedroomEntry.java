@@ -23,11 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class BedroomEntry extends AppCompatActivity implements View.OnClickListener {
     Button  submit, reset, test;
     EditText length, height, width;
-
     private String roomName="bedroom";
     private String bedUrl="empty";
-
-
     private FirebaseUser mUser;
     private String userId;
     private FirebaseAuth mAuth;

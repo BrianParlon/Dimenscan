@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="0.058" />
 
     <Button
-        android:id="@+id/findBeds"
+        android:id="@+id/findDesk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Display Room"

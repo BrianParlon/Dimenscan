@@ -366,9 +366,11 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void viewDeskRoom(){
-        Intent deskRoom = new Intent(context, ViewDesk.class);
+        Intent deskRoom = new Intent(context, DeskRoomEntry.class);
         deskRoom.putExtra("depth",deskDepth.getText());
         deskRoom.putExtra("width",deskWidth.getText());
+        deskRoom.putExtra("price",deskPrice.getText());
+        deskRoom.putExtra("title",deskName.getText());
         context.startActivity(deskRoom);
     }
 }
