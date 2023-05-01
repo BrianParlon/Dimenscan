@@ -131,7 +131,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             //System.out.println(userInput);
             hUserInput--;
             sbh.append("," + hUserInput);
-            System.out.println(sbh.toString());
+          //  System.out.println(sbh.toString());
             height = sbh.toString();
         }
         int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
@@ -145,7 +145,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             //System.out.println(userInput);
             dUserInput--;
             sbl.append("," + dUserInput);
-            System.out.println(sbl.toString());
+//            System.out.println(sbl.toString());
             depth = sbl.toString();
         }
         int wUserInput = Integer.parseInt(textWidth.getText().toString().trim());
@@ -159,7 +159,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             //System.out.println(userInput);
             wUserInput--;
             sbw.append("," + wUserInput);
-            System.out.println(sbw.toString());
+//            System.out.println(sbw.toString());
             width = sbw.toString();
         }
 

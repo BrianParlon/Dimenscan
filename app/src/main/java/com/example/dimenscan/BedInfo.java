@@ -359,7 +359,7 @@ public class BedInfo extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void viewBedRoom(){
-        Intent bedIntent = new Intent(context, ViewBed.class);
+        Intent bedIntent = new Intent(context, BedroomEntry.class);
         bedIntent.putExtra("depth",bedDepth.getText());
         bedIntent.putExtra("width",bedWidth.getText());
         bedIntent.putExtra("price",bedPrice.getText());

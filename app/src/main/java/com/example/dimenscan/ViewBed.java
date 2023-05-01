@@ -56,11 +56,12 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
 
 
     //All Measurements are in Meters
-    private double roomWidth = 5;
-    private double roomHeight = 5;
+    private double roomWidth;
+    private double roomHeight;
 
     private double deskWidth;
     private double deskHeight;
+
     private String roomName="bedroom";
     private String bedUrl="empty";
     private String deskPrice,deskTitle;
@@ -99,37 +100,29 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         storageReference= FirebaseStorage.getInstance().getReference("Beds");
         databaseReference = FirebaseDatabase.getInstance().getReference("images").child(userId);
 
-
-
-
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
 
-        Intent bedIntent = getIntent();
-        deskWidth = Double.parseDouble(bedIntent.getStringExtra("width"));
-        deskHeight= Double.parseDouble(bedIntent.getStringExtra("depth"));
-        deskPrice = bedIntent.getStringExtra("price");
-        deskTitle = bedIntent.getStringExtra("title");
+        Intent roomEntry = getIntent();
+        roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth")); // <--- fixed typo here
+        roomHeight = Double.parseDouble(roomEntry.getStringExtra("rDepth"));
+
+        deskWidth = Double.parseDouble(roomEntry.getStringExtra("bWidth"));
+        deskHeight= Double.parseDouble(roomEntry.getStringExtra("bHeight"));
+        deskPrice = roomEntry.getStringExtra("bPrice");
+        deskTitle = roomEntry.getStringExtra("bTitle");
+
         deskHeight = deskHeight/100;
         deskWidth = deskWidth/100;
-
 
         // Room dimensions
         roomSize = new SimpleXYSeries(Arrays.asList(0, roomWidth, roomWidth, 0),
                 Arrays.asList(0, 0, roomHeight, roomHeight),
                 "Room");
 
-
-//        //Desk dimensions
-//        deskSize = new SimpleXYSeries(Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
-//                Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
-//                "Desk");
-
-        desk = new RoomObject(deskWidth, deskHeight, "Desk", deskX, deskY);
-
+        desk = new RoomObject(deskWidth, deskHeight, "Bed", deskX, deskY);
         desk.updateObjectSize();
         roomObject.add(desk);
-
 
         // add to the plot
         plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null,null , null));
@@ -138,8 +131,6 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         // set the range of plot to match the room dimensions
         plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
         plot.setDomainBoundaries(0, roomWidth, BoundaryMode.FIXED);
-
-
 
         plot.setDrawingCacheEnabled(true);
         // touch to move the desk
@@ -269,6 +260,7 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
         EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
 
+
         AlertDialog.Builder objDialog = new AlertDialog.Builder(this);
         objDialog.setTitle("Add Object to Room");
         objDialog.setView(dialogView);
@@ -292,8 +284,11 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
         // Calculate the position of the new object
         // by calculating x and y values by the widht and room height it ensures
         // it will be inside the room
+//        double x = 2;
+//        double y = 2.5;
         double x = Math.random() * (roomWidth - width);
         double y = Math.random() * (roomHeight - height);
+
 
 
         RoomObject newObject = new RoomObject(width, height, objName, x, y);

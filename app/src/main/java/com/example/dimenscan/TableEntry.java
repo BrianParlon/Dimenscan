@@ -69,7 +69,6 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             case R.id.filterTable:
                 searching(getApplicationContext());
                 Toast.makeText(TableEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
-
                 break;
 
             case R.id.tResetBtn:
@@ -80,14 +79,15 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         }
     }
     private void resetDimensions() {
-        TextView textDepth = findViewById(R.id.editTextTextPersonName7);
-        TextView textHeight = findViewById(R.id.editTextTextPersonName11);
-        TextView textWidth = findViewById(R.id.editTextTextPersonName12);
+        TextView textDepth = findViewById(R.id.tLength);
+        TextView textHeight = findViewById(R.id.tHeight);
+        TextView textWidth = findViewById(R.id.tWidth);
 
-        textDepth.setText("");
-        textHeight.setText("");
-        textWidth.setText("");
-    }
+            textDepth.setText("");
+            textHeight.setText("");
+            textWidth.setText("");
+        }
+
 
     private void searching(Context context) {
 
@@ -129,7 +129,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             //System.out.println(userInput);
             hUserInput--;
             sbh.append("," + hUserInput);
-            System.out.println(sbh.toString());
+//            System.out.println(sbh.toString());
             height = sbh.toString();
         }
         int dUserInput = Integer.parseInt(textDepth.getText().toString().trim());
@@ -143,7 +143,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             //System.out.println(userInput);
             dUserInput--;
             sbl.append("," + dUserInput);
-            System.out.println(sbl.toString());
+//            System.out.println(sbl.toString());
             depth = sbl.toString();
         }
         int wUserInput = Integer.parseInt(textWidth.getText().toString().trim());
@@ -157,7 +157,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
             //System.out.println(userInput);
             wUserInput--;
             sbw.append("," + wUserInput);
-            System.out.println(sbw.toString());
+//            System.out.println(sbw.toString());
             width = sbw.toString();
         }
         // goLink("https://flanagans.ie/collections/furniture/study/office-desks/?pa_width-cm=" + width + "&pa_depth-cm=" + depth + "&pa_height-cm=" + height);

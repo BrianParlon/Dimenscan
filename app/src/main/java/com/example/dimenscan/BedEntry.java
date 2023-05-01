@@ -63,7 +63,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.findBeds:
                 searching(getApplicationContext());
-                Toast.makeText(BedEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
+                Toast.makeText(BedEntry.this," Searching results",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.bResetBtn:
@@ -75,9 +75,9 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         }
     }
     private void resetDimensions() {
-        TextView textDepth = findViewById(R.id.editTextTextPersonName7);
-        TextView textHeight = findViewById(R.id.editTextTextPersonName11);
-        TextView textWidth = findViewById(R.id.editTextTextPersonName12);
+        TextView textDepth = findViewById(R.id.bLength);
+        TextView textHeight = findViewById(R.id.bHeight);
+        TextView textWidth = findViewById(R.id.bWidth);
 
         textDepth.setText("");
         textHeight.setText("");
