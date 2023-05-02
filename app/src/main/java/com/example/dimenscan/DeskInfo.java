@@ -168,7 +168,9 @@ public class DeskInfo extends AppCompatActivity implements View.OnClickListener 
 
         if(paymentSheetResult instanceof PaymentSheetResult.Completed){
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
-            savePurchase();
+
+            startActivity(new Intent(this, Profile.class));
+
         }
     }
 
