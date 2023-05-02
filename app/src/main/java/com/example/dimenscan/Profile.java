@@ -94,8 +94,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
 
                 case R.id.displayRoom:
-               objectDialog();
-                break;
+                    startActivity(new Intent(this, RoomEnterDetails.class));
+
+                    break;
 
             case R.id.viewImages:
                 startActivity(new Intent(this, ImagesActivity.class));

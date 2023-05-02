@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class TableRoomEntry extends AppCompatActivity implements View.OnClickListener {
+public class RoomEnterDetails extends AppCompatActivity implements View.OnClickListener {
     Button  submit, reset, test;
     EditText length, height, width;
     private String roomName="bedroom";
@@ -48,10 +48,7 @@ public class TableRoomEntry extends AppCompatActivity implements View.OnClickLis
         reset.setOnClickListener(this);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference().child("bed_dimensions").child(onlineUserId);
         userId = mUser.getUid();
-
-
 
         //Users input for their measurements
         length = (EditText) findViewById(R.id.bLength);
@@ -65,12 +62,12 @@ public class TableRoomEntry extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.findTables:
                 searching(getApplicationContext());
-                Toast.makeText(TableRoomEntry.this,"Viewing in Room",Toast.LENGTH_LONG).show();
+                Toast.makeText(RoomEnterDetails.this,"Viewing in Room",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.bResetBtn:
                 resetDimensions();
-                Toast.makeText(TableRoomEntry.this,"Dimensions reset",Toast.LENGTH_LONG).show();
+                Toast.makeText(RoomEnterDetails.this,"Dimensions reset",Toast.LENGTH_LONG).show();
                 break;
 
 
@@ -90,23 +87,11 @@ public class TableRoomEntry extends AppCompatActivity implements View.OnClickLis
 
         String depth = textDepth.getText().toString().trim();
         String width = textWidth.getText().toString().trim();
-        String deskPrice,deskTitle,deskWidth,deskHeight;
 
-        Intent tableRoom = getIntent();
-        deskWidth = tableRoom.getStringExtra("width");
-        deskHeight= tableRoom.getStringExtra("depth");
-        deskPrice = tableRoom.getStringExtra("price");
-        deskTitle = tableRoom.getStringExtra("title");
-
-
-
-        Intent roomEntry  = new Intent(context, ViewTable.class);
+        Intent roomEntry  = new Intent(context, ViewRoom.class);
         roomEntry.putExtra("rWidth", width);
         roomEntry.putExtra("rDepth", depth);
-        roomEntry.putExtra("tWidth",deskWidth);
-        roomEntry.putExtra("tHeight",deskHeight);
-        roomEntry.putExtra("tPrice",deskPrice);
-        roomEntry.putExtra("tTitle",deskTitle);
+
 
         roomEntry.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(roomEntry);

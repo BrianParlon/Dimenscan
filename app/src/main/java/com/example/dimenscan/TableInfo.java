@@ -91,7 +91,6 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
         tableName =findViewById(R.id.tableTitle);
         tableImg=findViewById(R.id.tablePicture);
-
         tableDepth =findViewById(R.id.tableDepth);
         tableWidth =findViewById(R.id.tableWidth);
         tableHeight= findViewById(R.id.tableHght);
@@ -383,9 +382,6 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
                 double width = Double.parseDouble(widthTxt.getText().toString());
                 double height = Double.parseDouble(heightTxt.getText().toString());
 
-
-
-
             }
         });
         objDialog.setNegativeButton("Cancel", null);
@@ -403,9 +399,11 @@ public class TableInfo extends AppCompatActivity implements View.OnClickListener
 
 
     public void viewDeskRoom(){
-        Intent tableRoom = new Intent(context, ViewTable.class);
+        Intent tableRoom = new Intent(context, TableRoomEntry.class);
         tableRoom.putExtra("depth",tableDepth.getText());
         tableRoom.putExtra("width",tableWidth.getText());
+        tableRoom.putExtra("price",tablePrice.getText());
+        tableRoom.putExtra("title",tableName.getText());
         context.startActivity(tableRoom);
     }
 }

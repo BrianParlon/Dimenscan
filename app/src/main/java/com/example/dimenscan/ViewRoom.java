@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ViewTable extends AppCompatActivity implements View.OnClickListener {
+public class ViewRoom extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser user;
     private String userId;
     private FirebaseAuth mAuth;
@@ -54,13 +54,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private RoomObject desk;
     private List<RoomObject> roomObject = new ArrayList<>();
 
-
     //All Measurements are in Meters
-    private double roomWidth ;
-    private double roomHeight ;
-
-//    private double roomWidth ;
-//    private double roomHeight;
+    private double roomWidth;
+    private double roomHeight;
 
     private double deskWidth;
     private double deskHeight;
@@ -72,7 +68,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     private double deskX = 2.0;
     //distance from bottom wall
     private double deskY = 2.5;
+
     private RoomObject lastTouch = null;
+
 
     private double lastTouchX;
     private double lastTouchY;
@@ -82,8 +80,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_table);
-
+        setContentView(R.layout.activity_view_desk);
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
 
@@ -99,10 +96,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         removeBtn = findViewById(R.id.remove);
         removeBtn.setOnClickListener(this);
 
-        storageReference= FirebaseStorage.getInstance().getReference("Tables");
+        storageReference= FirebaseStorage.getInstance().getReference("Beds");
         databaseReference = FirebaseDatabase.getInstance().getReference("images").child(userId);
-
-
 
         // create XYPlot object
         plot = (XYPlot) findViewById(R.id.myPlot);
@@ -112,13 +107,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth"));
         roomHeight = Double.parseDouble(roomEntry.getStringExtra("rDepth"));
 
-        deskWidth = Double.parseDouble(roomEntry.getStringExtra("tWidth"));
-        deskHeight= Double.parseDouble(roomEntry.getStringExtra("tHeight"));
-        deskPrice = roomEntry.getStringExtra("tPrice");
-        deskTitle = roomEntry.getStringExtra("tTitle");
 
-        deskHeight = deskHeight/100;
-        deskWidth = deskWidth/100;
+
+
 
 
         // Room dimensions
@@ -131,19 +122,19 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 //        deskSize = new SimpleXYSeries(Arrays.asList(deskX, deskX + deskWidth, deskX + deskWidth, deskX),
 //                Arrays.asList(deskY, deskY, deskY + deskHeight, deskY + deskHeight),
 //                "Desk");
-
-        desk = new RoomObject(deskWidth, deskHeight, "Table", deskX, deskY);
-        desk.updateObjectSize();
-        roomObject.add(desk);
+//
+//        desk = new RoomObject(deskWidth, deskHeight, "Desk", deskX, deskY);
+//        desk.updateObjectSize();
+//        roomObject.add(desk);
 
 
         // add to the plot
         plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
-        plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+//        plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
 
         // set the range of plot to match the room dimensions
-        plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
-        plot.setDomainBoundaries(0, roomWidth, BoundaryMode.FIXED);
+//        plot.setRangeBoundaries(0, roomHeight, BoundaryMode.FIXED);
+//        plot.setDomainBoundaries(0, roomWidth, BoundaryMode.FIXED);
 
         plot.setDrawingCacheEnabled(true);
         // touch to move the desk
@@ -183,7 +174,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                             lastTouchY = event.getY();
                         }
                         break;
-
                 }
                 return true;
             }
@@ -198,9 +188,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "Item has been rotated", Toast.LENGTH_SHORT).show();
                 rotation();
                 break;
-
             case R.id.CreateItem:
-                Toast.makeText(ViewTable.this, "Add a new Item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewRoom.this, "Add a new Item", Toast.LENGTH_SHORT).show();
                 objectDialog();
                 break;
 
@@ -209,8 +198,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                 removeTouch();
                 break;
 
-                case R.id.saveItem:
-                    uploadToStorage();
+            case R.id.saveItem:
+                uploadToStorage();
                 break;
         }
     }
@@ -238,7 +227,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-        StorageReference plotImg= storageReference.child("tables/table"+System.currentTimeMillis()+".png");
+        StorageReference plotImg= storageReference.child("UserCreate/Room"+System.currentTimeMillis()+".png");
 
         UploadTask uploadPlot = plotImg.putBytes(data);
         uploadPlot.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -254,12 +243,12 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
                 String uploadId = databaseReference.push().getKey();
                 databaseReference.child(uploadId).setValue(parseItem);
-                Toast.makeText(ViewTable.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewRoom.this, "Image saved to database.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(ViewTable.this, "Error has Occurred.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewRoom.this, "Error has Occurred.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -295,7 +284,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
     private void addingNewObject(double width, double height, String objName) {
         // Calculate the position of the new object
-        // by calculating x and y values by the widht and room height it ensures
+        // by calculating x and y values by the width and room height it ensures
         // it will be inside the room
         double x = Math.random() * (roomWidth - width);
         double y = Math.random() * (roomHeight - height);
@@ -308,16 +297,16 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
     }
 
     private void updatePlot() {
-    plot.clear();
-    plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
+        plot.clear();
+        plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
 
-    for (RoomObject obj : roomObject) {
-        obj.updateObjectSize();
-        plot.addSeries(obj.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+        for (RoomObject obj : roomObject) {
+            obj.updateObjectSize();
+            plot.addSeries(obj.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
+        }
+
+        plot.redraw();
     }
-
-    plot.redraw();
-}
 
     public void rotation(){
         double temporary = desk.width;
