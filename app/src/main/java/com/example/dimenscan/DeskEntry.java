@@ -70,7 +70,7 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
 
             case R.id.filterDesks:
                 searching(getApplicationContext());
-                Toast.makeText(DeskEntry.this, "Displaying website", Toast.LENGTH_LONG).show();
+                Toast.makeText(DeskEntry.this, "Displaying results", Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.resetBtn:
@@ -117,6 +117,13 @@ public class DeskEntry extends AppCompatActivity implements View.OnClickListener
             textWidth.requestFocus();
             return;
         }
+
+        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains("")){
+            textWidth.requestFocus();
+            Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
+            return;
+        }
+
 
 
 

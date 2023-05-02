@@ -29,6 +29,7 @@ public class DeskListing extends AppCompatActivity {
     private DeskParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
     private ProgressBar progressBar;
+
     private Context context;
 
     @Override
@@ -37,7 +38,7 @@ public class DeskListing extends AppCompatActivity {
         setContentView(R.layout.activity_desk_listing);
 
 
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progress_circle);
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setHasFixedSize(true);

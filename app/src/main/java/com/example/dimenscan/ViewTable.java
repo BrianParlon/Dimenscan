@@ -136,8 +136,6 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         desk.updateObjectSize();
         roomObject.add(desk);
 
-
-        // add to the plot
         plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
         plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
 
@@ -172,7 +170,7 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
                         double deltaX = (event.getX() - lastTouchX) / plot.getWidth() * roomWidth;
                         double deltaY = -(event.getY() - lastTouchY) / plot.getHeight() * roomHeight;
 
-                        // Check if the new position of the object is within the plot boundaries
+                        // Check if object is within the plot boundaries
                         if (desk.x + deltaX >= 0 && desk.x + desk.width + deltaX <= roomWidth &&
                                 desk.y + deltaY >= 0 && desk.y + desk.height + deltaY <= roomHeight) {
                             desk.x += deltaX;
@@ -230,7 +228,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         return bitmap;
     }
     private void uploadToStorage() {
-        //will convert all bitmap images to a PNG format so it can saved to firebaseStorage
+        // images to a PNG format and saved to firebaseStorage
+
         Bitmap plotBitmap = getPlotBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         plotBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -266,10 +265,8 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
 
 
     public void objectDialog() {
-        // Inflate the dialog layout
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.object_dialog, null);
-        // Find the EditTexts in the dialog layout
         EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
         EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
         EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
@@ -280,12 +277,9 @@ public class ViewTable extends AppCompatActivity implements View.OnClickListener
         objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Parse the width and height entered by the user
                 double width = Double.parseDouble(widthTxt.getText().toString());
                 double height = Double.parseDouble(heightTxt.getText().toString());
                 String obj = objectTxt.getText().toString();
-
-                // Add the new object to the plot
                 addingNewObject(width, height,obj);
             }
         });

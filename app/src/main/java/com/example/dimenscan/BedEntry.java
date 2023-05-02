@@ -63,7 +63,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.findBeds:
                 searching(getApplicationContext());
-                Toast.makeText(BedEntry.this," Searching results",Toast.LENGTH_LONG).show();
+                Toast.makeText(BedEntry.this," Viewing filtered results",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.bResetBtn:
@@ -109,6 +109,13 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
             textWidth.requestFocus();
         return;
         }
+
+        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains("")){
+            textWidth.requestFocus();
+            Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
+            return;
+        }
+
 
 
         int hUserInput = Integer.parseInt(textHeight.getText().toString().trim());

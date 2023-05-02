@@ -36,7 +36,7 @@ public class TableListing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_listing);
 
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progress_circle);
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setHasFixedSize(true);

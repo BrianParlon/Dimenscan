@@ -107,11 +107,6 @@ public class ViewRoom extends AppCompatActivity implements View.OnClickListener 
         roomWidth = Double.parseDouble(roomEntry.getStringExtra("rWidth"));
         roomHeight = Double.parseDouble(roomEntry.getStringExtra("rDepth"));
 
-
-
-
-
-
         // Room dimensions
         roomSize = new SimpleXYSeries(Arrays.asList(0, roomWidth, roomWidth, 0),
                 Arrays.asList(0, 0, roomHeight, roomHeight),
@@ -128,7 +123,7 @@ public class ViewRoom extends AppCompatActivity implements View.OnClickListener 
 //        roomObject.add(desk);
 
 
-        // add to the plot
+
         plot.addSeries(roomSize, new LineAndPointFormatter(Color.BLUE, null, null, null));
 //        plot.addSeries(desk.objSize, new LineAndPointFormatter(Color.BLACK, null, Color.BLACK, null));
 
@@ -219,7 +214,7 @@ public class ViewRoom extends AppCompatActivity implements View.OnClickListener 
         return bitmap;
     }
     private void uploadToStorage() {
-        //will convert all bitmap images to a PNG format so it can saved to firebaseStorage
+        //will convert images to a PNG format and saved to firebaseStorage
         Bitmap plotBitmap = getPlotBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         plotBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -255,10 +250,9 @@ public class ViewRoom extends AppCompatActivity implements View.OnClickListener 
 
 
     public void objectDialog() {
-        // Inflate the dialog layout
+
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.object_dialog, null);
-        // Find the EditTexts in the dialog layout
         EditText widthTxt = dialogView.findViewById(R.id.widthEntry);
         EditText heightTxt = dialogView.findViewById(R.id.heightEntry);
         EditText objectTxt = dialogView.findViewById(R.id.objectNameEntry);
@@ -269,12 +263,9 @@ public class ViewRoom extends AppCompatActivity implements View.OnClickListener 
         objDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Parse the width and height entered by the user
                 double width = Double.parseDouble(widthTxt.getText().toString());
                 double height = Double.parseDouble(heightTxt.getText().toString());
                 String obj = objectTxt.getText().toString();
-
-                // Add the new object to the plot
                 addingNewObject(width, height,obj);
             }
         });

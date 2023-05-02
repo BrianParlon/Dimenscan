@@ -68,7 +68,7 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.filterTable:
                 searching(getApplicationContext());
-                Toast.makeText(TableEntry.this,"Testing Online",Toast.LENGTH_LONG).show();
+                Toast.makeText(TableEntry.this," Viewing filtered results",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.tResetBtn:
@@ -113,6 +113,13 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         if(widthVal.isEmpty()){
             textWidth.setError("Width must be set!");
             textWidth.requestFocus();
+            return;
+        }
+
+
+        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains("")){
+            textWidth.requestFocus();
+            Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
             return;
         }
 
