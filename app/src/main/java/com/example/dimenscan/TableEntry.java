@@ -117,11 +117,11 @@ public class TableEntry extends AppCompatActivity implements View.OnClickListene
         }
 
 
-        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains("")){
-            textWidth.requestFocus();
-            Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
-            return;
-        }
+//        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains(".")){
+//            textWidth.requestFocus();
+//            Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
+//            return;
+//        }
 
 
 

@@ -231,10 +231,12 @@ public class ViewBed extends AppCompatActivity implements View.OnClickListener {
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
                 Uri downloadUrl = urlTask.getResult();
+                String height=null;
 
                 String width = String.valueOf(deskWidth);
                 String depth = String.valueOf(deskHeight);
-                ParseItem parseItem = new ParseItem(downloadUrl.toString(),roomName,width,depth,bedUrl,deskPrice,deskTitle);
+                ParseItem parseItem = new ParseItem(deskTitle,downloadUrl.toString(),width,depth,bedUrl,height,deskPrice);
+//                ParseItem parseItem = new ParseItem(downloadUrl.toString(),roomName,width,depth,bedUrl,deskPrice,deskTitle);
 
                 String uploadId = databaseReference.push().getKey();
                 databaseReference.child(uploadId).setValue(parseItem);

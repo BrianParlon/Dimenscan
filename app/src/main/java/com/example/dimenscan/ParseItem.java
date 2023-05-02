@@ -31,10 +31,10 @@ public class ParseItem {
 //    }
 
     public ParseItem(String title, String imgUrl, String width, String depth, String deskUrl, String height,String price) {
-        this.imgUrl = imgUrl;
         this.title = title;
-        this.depth = depth;
+        this.imgUrl = imgUrl;
         this.width = width;
+        this.depth = depth;
         this.deskUrl = deskUrl;
         this.height = height;
         this.price = price;

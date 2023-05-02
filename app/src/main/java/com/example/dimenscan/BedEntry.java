@@ -110,7 +110,7 @@ public class BedEntry extends AppCompatActivity implements View.OnClickListener 
         return;
         }
 
-        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains("")){
+        if(depthVal.contains(".") || heightVal.contains(".") || widthVal.contains(".")){
             textWidth.requestFocus();
             Toast.makeText(context, "Values must not contain a decimal", Toast.LENGTH_LONG).show();
             return;
